@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "DPlatformGenerator.generated.h"
 
+class ADPlatform;
+
 UCLASS()
 class REEFRUNNER_API ADPlatformGenerator : public AActor
 {
@@ -17,32 +19,33 @@ public:
 
 protected:
 
+	//How long it takes for a platform to spawn
+	UPROPERTY(EditDefaultsOnly)
+	float PlatformSpawnTime;
+
+	FTimerHandle PlatformSpawnTimerHandle;
+	
 	// The number of platforms that is spawned initially at game start
 	UPROPERTY(EditDefaultsOnly)
-	int NumOfStartingPlatforms = 20;
-
-	// How many individual static meshes make up a platform
-	// @TODO It would be fun to randomize this
-	UPROPERTY(EditDefaultsOnly)
-	int NumOfSegmentsInPlatform = 7;
-
-	// How large a platform segment is (in width)
-	// Using generic UE cube for now, so they are 1m (100.0cm)
-	UPROPERTY(EditDefaultsOnly)
-	float SegmentWidth = 100.0f;
+	int MaxPlatforms = 20;
 
 	// Where the first segment of a platform spawns
 	FVector SpawnOrigin;
 
 	bool SpawningFromRight = true;
 
+	// The platform template to spawn
 	UPROPERTY(EditDefaultsOnly)
-	UStaticMesh* PlatformMesh;
+	TSubclassOf<ADPlatform> PlatformTemplate;
+
+	UPROPERTY()
+	TArray<ADPlatform*> Platforms;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	virtual void SpawnPlatform(FVector PlatformOrigin);
+	UFUNCTION()
+	void SpawnPlatform();
 
 public:	
 	// Called every frame

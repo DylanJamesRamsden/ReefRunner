@@ -3,6 +3,7 @@
 
 #include "DPlatformGenerator.h"
 
+#include "DPlatform.h"
 #include "Engine/StaticMeshActor.h"
 
 // Sets default values
@@ -20,34 +21,34 @@ void ADPlatformGenerator::BeginPlay()
 
 	const FVector ActorLocation = GetActorLocation();
 
-	for (int PlatformID = 0; PlatformID < NumOfStartingPlatforms; PlatformID++) // X
-	{
-		SpawnOrigin.X = ActorLocation.X + (PlatformID * SegmentWidth);
-		// Resets the Y axis origin point
-		SpawnOrigin.Y = ActorLocation.Y + (((NumOfSegmentsInPlatform - 1)/2) * SegmentWidth);
+	SpawnOrigin.X = ActorLocation.X;
+	// Resets the Y axis origin point
+	// @TODO Dont hardcode these values
+	SpawnOrigin.Y = ActorLocation.Y + (((7 - 1)/2) * 100);
+	// SpawnOrigin.Y = ActorLocation.Y + (((NumOfSegmentsInPlatform - 1)/2) * SegmentWidth);
 
-		DrawDebugBox(GetWorld(), GetActorLocation(), FVector(25,25,25), FColor::Yellow, true, -1, 0, 10);
-		DrawDebugBox(GetWorld(), SpawnOrigin, FVector(25,25,25), FColor::Red, true, -1, 0, 10);
-
-		SpawnPlatform(SpawnOrigin);
-	}
+	GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);
 }
 
-void ADPlatformGenerator::SpawnPlatform(FVector PlatformOrigin)
+void ADPlatformGenerator::SpawnPlatform()
 {
-	for (int SegmentID = 0; SegmentID < NumOfSegmentsInPlatform; SegmentID++) // Y
-	{
-		DrawDebugBox(GetWorld(), FVector(PlatformOrigin), FVector(50,50,50), FColor::Green, true, -1, 0, 10);
-			
-		AStaticMeshActor* MyNewActor = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass());
-		MyNewActor->SetMobility(EComponentMobility::Movable);
-		MyNewActor->SetActorLocation(PlatformOrigin);
-		if (UStaticMeshComponent* MeshComp = MyNewActor->GetStaticMeshComponent())
-		{
-			MeshComp->SetStaticMesh(PlatformMesh);
-		}
+	DrawDebugBox(GetWorld(), GetActorLocation(), FVector(25,25,25), FColor::Yellow, true, -1, 0, 10);
+	DrawDebugBox(GetWorld(), SpawnOrigin, FVector(25,25,25), FColor::Red, true, -1, 0, 10);
 
-		PlatformOrigin.Y = PlatformOrigin.Y - SegmentWidth;
+	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate);
+	NewPlatform->SetActorLocation(SpawnOrigin);
+	NewPlatform->StartSegmentSpawning(SpawnOrigin);
+
+	SpawnOrigin.X = SpawnOrigin.X + 100.0f;
+
+	Platforms.Add(NewPlatform);
+
+	if (Platforms.Num() == MaxPlatforms)
+	{
+		if (GetWorldTimerManager().TimerExists(PlatformSpawnTimerHandle))
+		{
+			GetWorldTimerManager().ClearTimer(PlatformSpawnTimerHandle);
+		}
 	}
 }
 
