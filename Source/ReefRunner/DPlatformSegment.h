@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "Engine/StaticMeshActor.h"
 #include "DPlatformSegment.generated.h"
 
 UCLASS()
-class REEFRUNNER_API ADPlatformSegment : public AActor
+class REEFRUNNER_API ADPlatformSegment : public AStaticMeshActor
 {
 	GENERATED_BODY()
 	
@@ -16,10 +16,17 @@ public:
 	ADPlatformSegment();
 
 protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	
+	// How large a platform segment is (in width)
+	// Using generic UE cube for now, so they are 1m (100.0cm)
+	UPROPERTY(EditDefaultsOnly)
+	float SegmentWidth = 100.0f;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
