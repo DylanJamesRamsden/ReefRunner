@@ -56,7 +56,7 @@ void ADPlatform::Tick(float DeltaTime)
 
 }
 
-void ADPlatform::StartSegmentSpawning(FVector Origin, bool bShouldSpawnFromRight)
+void ADPlatform::StartSegmentSpawning(bool bShouldSpawnFromRight)
 {
 	SpawnOrigin.X = GetActorLocation().X;
 

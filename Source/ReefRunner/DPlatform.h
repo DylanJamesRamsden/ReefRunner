@@ -51,5 +51,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void StartSegmentSpawning(FVector Origin, bool bShouldSpawnFromRight);
+	void StartSegmentSpawning(bool bShouldSpawnFromRight);
 };

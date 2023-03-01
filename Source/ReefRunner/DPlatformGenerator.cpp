@@ -4,7 +4,6 @@
 #include "DPlatformGenerator.h"
 
 #include "DPlatform.h"
-#include "Engine/StaticMeshActor.h"
 
 // Sets default values
 ADPlatformGenerator::ADPlatformGenerator()
@@ -37,7 +36,7 @@ void ADPlatformGenerator::SpawnPlatform()
 	if (NewPlatform)
 	{
 		NewPlatform->SetActorLocation(SpawnOrigin);
-		NewPlatform->StartSegmentSpawning(SpawnOrigin, bSpawningFromRight);
+		NewPlatform->StartSegmentSpawning(bSpawningFromRight);
 
 		SpawnOrigin.X = SpawnOrigin.X + 100.0f;
 
