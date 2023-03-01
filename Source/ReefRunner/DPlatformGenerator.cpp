@@ -19,36 +19,46 @@ void ADPlatformGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 
-	const FVector ActorLocation = GetActorLocation();
+	if (PlatformTemplate)
+	{
+		SpawnOrigin.X = GetActorLocation().X;
+		SpawnOrigin.Y = GetActorLocation().Y;
 
-	SpawnOrigin.X = ActorLocation.X;
-	// Resets the Y axis origin point
-	// @TODO Dont hardcode these values
-	SpawnOrigin.Y = ActorLocation.Y + (((7 - 1)/2) * 100);
-	// SpawnOrigin.Y = ActorLocation.Y + (((NumOfSegmentsInPlatform - 1)/2) * SegmentWidth);
-
-	GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);
+		GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);	
+	}
 }
 
 void ADPlatformGenerator::SpawnPlatform()
 {
-	DrawDebugBox(GetWorld(), GetActorLocation(), FVector(25,25,25), FColor::Yellow, true, -1, 0, 10);
-	DrawDebugBox(GetWorld(), SpawnOrigin, FVector(25,25,25), FColor::Red, true, -1, 0, 10);
+	//DrawDebugBox(GetWorld(), GetActorLocation(), FVector(25,25,25), FColor::Yellow, true, -1, 0, 10);
+	//DrawDebugBox(GetWorld(), SpawnOrigin, FVector(25,25,25), FColor::Red, true, -1, 0, 10);
 
 	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate);
-	NewPlatform->SetActorLocation(SpawnOrigin);
-	NewPlatform->StartSegmentSpawning(SpawnOrigin);
-
-	SpawnOrigin.X = SpawnOrigin.X + 100.0f;
-
-	Platforms.Add(NewPlatform);
-
-	if (Platforms.Num() == MaxPlatforms)
+	if (NewPlatform)
 	{
-		if (GetWorldTimerManager().TimerExists(PlatformSpawnTimerHandle))
+		NewPlatform->SetActorLocation(SpawnOrigin);
+		NewPlatform->StartSegmentSpawning(SpawnOrigin, bSpawningFromRight);
+
+		SpawnOrigin.X = SpawnOrigin.X + 100.0f;
+
+		if (!bSpawningFromRight)
 		{
-			GetWorldTimerManager().ClearTimer(PlatformSpawnTimerHandle);
+			bSpawningFromRight = true;
 		}
+		else
+		{
+			bSpawningFromRight = false;
+		}
+
+		Platforms.Add(NewPlatform);
+
+		if (Platforms.Num() == MaxPlatforms)
+		{
+			if (GetWorldTimerManager().TimerExists(PlatformSpawnTimerHandle))
+			{
+				GetWorldTimerManager().ClearTimer(PlatformSpawnTimerHandle);
+			}
+		}	
 	}
 }
 

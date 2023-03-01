@@ -8,6 +8,10 @@
 
 class ADPlatform;
 
+	// General note to self:
+	// X axis if forward in the spawners case
+	// Y axis is right in the spawners case
+
 UCLASS()
 class REEFRUNNER_API ADPlatformGenerator : public AActor
 {
@@ -20,22 +24,22 @@ public:
 protected:
 
 	//How long it takes for a platform to spawn
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	float PlatformSpawnTime;
 
 	FTimerHandle PlatformSpawnTimerHandle;
 	
 	// The number of platforms that is spawned initially at game start
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	int MaxPlatforms = 20;
 
 	// Where the first segment of a platform spawns
 	FVector SpawnOrigin;
 
-	bool SpawningFromRight = true;
+	bool bSpawningFromRight = true;
 
 	// The platform template to spawn
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	TSubclassOf<ADPlatform> PlatformTemplate;
 
 	UPROPERTY()
