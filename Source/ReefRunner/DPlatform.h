@@ -31,6 +31,8 @@ protected:
 
 	FVector SpawnOrigin;
 
+	bool bSpawningFromRight;
+
 	// How many individual static meshes make up a platform
 	// @TODO It would be fun to randomize this
 	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "1.0", ClampMax = "10.0"))
@@ -49,5 +51,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void StartSegmentSpawning(FVector Origin);
+	void StartSegmentSpawning(FVector Origin, bool bShouldSpawnFromRight);
 };
