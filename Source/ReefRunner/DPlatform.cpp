@@ -25,7 +25,6 @@ void ADPlatform::SpawnSegment()
 	//DrawDebugBox(GetWorld(), FVector(SpawnOrigin), FVector(50,50,50), FColor::Green, true, -1, 0, 10);
 			
 	ADPlatformSegment* NewSegment = GetWorld()->SpawnActor<ADPlatformSegment>(SegmentTemplate);
-	NewSegment->SetMobility(EComponentMobility::Movable);
 	NewSegment->GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
 	NewSegment->SetActorLocation(SpawnOrigin);
 
