@@ -9,6 +9,13 @@ ADPickUp::ADPickUp()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
+
+	StaticMeshComp->SetupAttachment(RootComponent);
+	SphereComp->SetupAttachment(RootComponent);
+
+	StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called when the game starts or when spawned
@@ -23,5 +30,12 @@ void ADPickUp::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ADPickUp::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+
+	Destroy();
 }
 

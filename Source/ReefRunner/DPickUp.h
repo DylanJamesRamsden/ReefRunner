@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "DPickUp.generated.h"
 
@@ -16,11 +17,20 @@ public:
 	ADPickUp();
 
 protected:
+
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	USphereComponent* SphereComp;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 };
