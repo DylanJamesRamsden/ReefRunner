@@ -18,7 +18,7 @@ public:
 
 protected:
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UStaticMeshComponent* StaticMeshComp;
 
 	UPROPERTY(EditDefaultsOnly)
