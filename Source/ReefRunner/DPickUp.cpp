@@ -3,6 +3,8 @@
 
 #include "DPickUp.h"
 
+#include "Components/SphereComponent.h"
+
 // Sets default values
 ADPickUp::ADPickUp()
 {
