@@ -6,6 +6,8 @@
 #include "Engine/StaticMeshActor.h"
 #include "DPlatformSegment.generated.h"
 
+class ADPickUp;
+
 UCLASS()
 class REEFRUNNER_API ADPlatformSegment : public AStaticMeshActor
 {
@@ -16,6 +18,12 @@ public:
 	ADPlatformSegment();
 
 protected:
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ADPickUp> PickUpTemplate;
+
+	UPROPERTY()
+	ADPickUp* MyPickUp;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,5 +37,7 @@ public:
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void SpawnPickUp();
 
 };

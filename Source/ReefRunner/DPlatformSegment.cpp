@@ -3,6 +3,8 @@
 
 #include "DPlatformSegment.h"
 
+#include "DPickUp.h"
+
 // Sets default values
 ADPlatformSegment::ADPlatformSegment()
 {
@@ -23,5 +25,17 @@ void ADPlatformSegment::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ADPlatformSegment::SpawnPickUp()
+{
+	if (PickUpTemplate)
+	{
+		if (ADPickUp* NewPickUp = GetWorld()->SpawnActor<ADPickUp>(PickUpTemplate))
+		{
+			MyPickUp = NewPickUp;
+			NewPickUp->SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 150.0f));	
+		}
+	}
 }
 

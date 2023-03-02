@@ -27,6 +27,7 @@ void ADPlatform::SpawnSegment()
 	ADPlatformSegment* NewSegment = GetWorld()->SpawnActor<ADPlatformSegment>(SegmentTemplate);
 	NewSegment->GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
 	NewSegment->SetActorLocation(SpawnOrigin);
+	NewSegment->SpawnPickUp();
 
 	if (bSpawningFromRight)
 	{
