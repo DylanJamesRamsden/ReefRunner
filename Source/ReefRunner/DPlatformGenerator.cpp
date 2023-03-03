@@ -35,8 +35,24 @@ void ADPlatformGenerator::SpawnPlatform()
 	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate);
 	if (NewPlatform)
 	{
+		PlatformsSinceLastPickUp++;
+
+		bool bCanSpawnPickUp = false;
+		if (PlatformsSinceLastPickUp >= PlatformsBetweenPickups)
+		{
+			// Min and Max inclusive
+			bCanSpawnPickUp = FMath::RandRange(0, PickUpSpawnVariance) == PickUpSpawnVariance;
+		}
+		
 		NewPlatform->SetActorLocation(SpawnOrigin);
-		NewPlatform->SpawnSegments(bSpawningFromRight);
+		NewPlatform->SpawnSegments(bSpawningFromRight,
+			bCanSpawnPickUp,
+			MaxPickUpsPerPlatform);
+
+		if (bCanSpawnPickUp)
+		{
+			PlatformsSinceLastPickUp = 0;
+		}
 
 		SpawnOrigin.X = SpawnOrigin.X + 100.0f;
 

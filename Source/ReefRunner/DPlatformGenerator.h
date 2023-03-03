@@ -44,6 +44,17 @@ protected:
 
 	UPROPERTY()
 	TArray<ADPlatform*> Platforms;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
+	int PlatformsBetweenPickups = 10;
+
+	int PlatformsSinceLastPickUp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
+	int MaxPickUpsPerPlatform = 2;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
+	int PickUpSpawnVariance;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -27,7 +27,7 @@ void ADPlatform::Tick(float DeltaTime)
 
 }
 
-void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight)
+void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps)
 {
 	SpawnOrigin.X = GetActorLocation().X;
 
@@ -47,7 +47,11 @@ void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight)
 		ADPlatformSegment* NewSegment = GetWorld()->SpawnActor<ADPlatformSegment>(SegmentTemplate);
 		NewSegment->GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
 		NewSegment->SetActorLocation(SpawnOrigin);
-		NewSegment->SpawnPickUp();
+
+		if (bCanSpawnPickUp)
+		{
+			NewSegment->SpawnPickUp();
+		}
 
 		if (bSpawningFromRight)
 		{
