@@ -27,7 +27,7 @@ void ADPlatform::Tick(float DeltaTime)
 
 }
 
-void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps)
+void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance)
 {
 	SpawnOrigin.X = GetActorLocation().X;
 
@@ -50,7 +50,14 @@ void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp,
 
 		if (bCanSpawnPickUp)
 		{
-			NewSegment->SpawnPickUp();
+			if (MaxPickUps != 0)
+			{
+				if (FMath::RandRange(0, PickUpSpawnVariance) == PickUpSpawnVariance)
+				{
+					NewSegment->SpawnPickUp();
+					MaxPickUps--;
+				}
+			}
 		}
 
 		if (bSpawningFromRight)

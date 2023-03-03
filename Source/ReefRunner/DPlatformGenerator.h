@@ -45,14 +45,25 @@ protected:
 	UPROPERTY()
 	TArray<ADPlatform*> Platforms;
 
+	// How many platforms need to pass before spawning a new pick-up platform
+	// can be considered
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
 	int PlatformsBetweenPickups = 10;
 
 	int PlatformsSinceLastPickUp;
 
+	// The max number of pick-ups a platform can spawn
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
 	int MaxPickUpsPerPlatform = 2;
 
+	// The chance a pick-up platform will be spawned once the number of platforms spawned
+	// exceeds the PlatformsBetweenPickUps
+	// (0 - PickUpPlatformSpawnVariance == PickUpPlatformSpawnVariance)
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
+	int PickUpPlatformSpawnVariance;
+
+	// The chance a segment in a pick-up platform has in order to spawn a pick-up
+	// (0 - PickUpSpawnVariance == PickUpSpawnVariance)
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
 	int PickUpSpawnVariance;
 	

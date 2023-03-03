@@ -41,13 +41,14 @@ void ADPlatformGenerator::SpawnPlatform()
 		if (PlatformsSinceLastPickUp >= PlatformsBetweenPickups)
 		{
 			// Min and Max inclusive
-			bCanSpawnPickUp = FMath::RandRange(0, PickUpSpawnVariance) == PickUpSpawnVariance;
+			bCanSpawnPickUp = FMath::RandRange(0, PickUpPlatformSpawnVariance) == PickUpPlatformSpawnVariance;
 		}
 		
 		NewPlatform->SetActorLocation(SpawnOrigin);
 		NewPlatform->SpawnSegments(bSpawningFromRight,
 			bCanSpawnPickUp,
-			MaxPickUpsPerPlatform);
+			MaxPickUpsPerPlatform,
+			PickUpSpawnVariance);
 
 		if (bCanSpawnPickUp)
 		{
