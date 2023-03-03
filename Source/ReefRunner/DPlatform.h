@@ -19,12 +19,6 @@ public:
 
 protected:
 
-	// How long it takes for a segment to spawn
-	UPROPERTY(EditDefaultsOnly)
-	float SegmentSpawnTime;
-
-	FTimerHandle SegmentSpawnTimerHandle;
-
 	// The segment template to spawn
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ADPlatformSegment> SegmentTemplate;
@@ -44,12 +38,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
-	void SpawnSegment();
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void StartSegmentSpawning(bool bShouldSpawnFromRight);
+	void SpawnSegments(bool bShouldSpawnFromRight);
 };

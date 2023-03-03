@@ -36,7 +36,7 @@ void ADPlatformGenerator::SpawnPlatform()
 	if (NewPlatform)
 	{
 		NewPlatform->SetActorLocation(SpawnOrigin);
-		NewPlatform->StartSegmentSpawning(bSpawningFromRight);
+		NewPlatform->SpawnSegments(bSpawningFromRight);
 
 		SpawnOrigin.X = SpawnOrigin.X + 100.0f;
 

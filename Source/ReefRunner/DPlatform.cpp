@@ -20,35 +20,6 @@ void ADPlatform::BeginPlay()
 	
 }
 
-void ADPlatform::SpawnSegment()
-{
-	//DrawDebugBox(GetWorld(), FVector(SpawnOrigin), FVector(50,50,50), FColor::Green, true, -1, 0, 10);
-			
-	ADPlatformSegment* NewSegment = GetWorld()->SpawnActor<ADPlatformSegment>(SegmentTemplate);
-	NewSegment->GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
-	NewSegment->SetActorLocation(SpawnOrigin);
-	NewSegment->SpawnPickUp();
-
-	if (bSpawningFromRight)
-	{
-		SpawnOrigin.Y = SpawnOrigin.Y - NewSegment->SegmentWidth;
-	}
-	else
-	{
-		SpawnOrigin.Y = SpawnOrigin.Y + NewSegment->SegmentWidth;
-	}
-
-	Segments.Add(NewSegment);
-
-	if (Segments.Num() == NumSegmentsToSpawn)
-	{
-		if (GetWorldTimerManager().TimerExists(SegmentSpawnTimerHandle))
-		{
-			GetWorldTimerManager().ClearTimer(SegmentSpawnTimerHandle);
-		}	
-	}
-}
-
 // Called every frame
 void ADPlatform::Tick(float DeltaTime)
 {
@@ -56,7 +27,7 @@ void ADPlatform::Tick(float DeltaTime)
 
 }
 
-void ADPlatform::StartSegmentSpawning(bool bShouldSpawnFromRight)
+void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight)
 {
 	SpawnOrigin.X = GetActorLocation().X;
 
@@ -70,9 +41,24 @@ void ADPlatform::StartSegmentSpawning(bool bShouldSpawnFromRight)
 	}
 
 	bSpawningFromRight = bShouldSpawnFromRight;
-	
-	SpawnSegment();
 
-	GetWorldTimerManager().SetTimer(SegmentSpawnTimerHandle, this, &ADPlatform::SpawnSegment, SegmentSpawnTime, true);
+	for (int i = 0; i < NumSegmentsToSpawn; i++)
+	{
+		ADPlatformSegment* NewSegment = GetWorld()->SpawnActor<ADPlatformSegment>(SegmentTemplate);
+		NewSegment->GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
+		NewSegment->SetActorLocation(SpawnOrigin);
+		NewSegment->SpawnPickUp();
+
+		if (bSpawningFromRight)
+		{
+			SpawnOrigin.Y = SpawnOrigin.Y - NewSegment->SegmentWidth;
+		}
+		else
+		{
+			SpawnOrigin.Y = SpawnOrigin.Y + NewSegment->SegmentWidth;
+		}
+
+		Segments.Add(NewSegment);
+	}
 }
 
