@@ -66,6 +66,28 @@ protected:
 	// (0 - PickUpSpawnVariance == PickUpSpawnVariance)
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning|PickUps")
 	int PickUpSpawnVariance;
+
+	// How many platforms need to pass before spawning a new obstacle platform
+	// can be considered
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Obstacles")
+	int PlatformsBetweenObstacles = 10;
+
+	int PlatformsSinceLastObstacle;
+
+	// The max number of obstacles a platform can spawn
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Obstacles")
+	int MaxObstaclesPerPlatform = 2;
+
+	// The chance a obstacle platform will be spawned once the number of platforms spawned
+	// exceeds the PlatformsBetweenObstacles
+	// (0 - ObstaclePlatformSpawnVariance == ObstaclePlatformSpawnVariance)
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Obstacles")
+	int ObstaclesPlatformSpawnVariance;
+
+	// The chance a segment in a obstacle platform has in order to spawn a obstacle
+	// (0 - ObstacleSpawnVariance == ObstacleSpawnVariance)
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Obstacles")
+	int ObstacleSpawnVariance;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

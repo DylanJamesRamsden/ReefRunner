@@ -36,6 +36,7 @@ void ADPlatformGenerator::SpawnPlatform()
 	if (NewPlatform)
 	{
 		PlatformsSinceLastPickUp++;
+		PlatformsSinceLastObstacle++;
 
 		bool bCanSpawnPickUp = false;
 		if (PlatformsSinceLastPickUp >= PlatformsBetweenPickups)
@@ -43,16 +44,30 @@ void ADPlatformGenerator::SpawnPlatform()
 			// Min and Max inclusive
 			bCanSpawnPickUp = FMath::RandRange(0, PickUpPlatformSpawnVariance) == PickUpPlatformSpawnVariance;
 		}
+
+		bool bCanSpawnObstacle = false;
+		if (PlatformsSinceLastObstacle >= PlatformsBetweenObstacles)
+		{
+			bCanSpawnObstacle = FMath::RandRange(0, ObstaclesPlatformSpawnVariance) == ObstaclesPlatformSpawnVariance;
+		}
 		
 		NewPlatform->SetActorLocation(SpawnOrigin);
 		NewPlatform->SpawnSegments(bSpawningFromRight,
 			bCanSpawnPickUp,
 			MaxPickUpsPerPlatform,
-			PickUpSpawnVariance);
+			PickUpSpawnVariance,
+			bCanSpawnObstacle,
+			MaxObstaclesPerPlatform,
+			ObstacleSpawnVariance);
 
 		if (bCanSpawnPickUp)
 		{
 			PlatformsSinceLastPickUp = 0;
+		}
+
+		if (bCanSpawnObstacle)
+		{
+			PlatformsSinceLastObstacle = 0;
 		}
 
 		SpawnOrigin.X = SpawnOrigin.X + 100.0f;
