@@ -42,5 +42,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance);
+	void SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
+		bool bCanSpawnObstacles, int MaxObstacles, int ObstacleSpawnVariance);
 };

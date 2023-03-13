@@ -27,7 +27,8 @@ void ADPlatform::Tick(float DeltaTime)
 
 }
 
-void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance)
+void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
+	bool bCanSpawnObstacles, int MaxObstacles, int ObstacleSpawnVariance)
 {
 	SpawnOrigin.X = GetActorLocation().X;
 
@@ -48,6 +49,7 @@ void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp,
 		NewSegment->GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
 		NewSegment->SetActorLocation(SpawnOrigin);
 
+		bool bOccupied = false;
 		if (bCanSpawnPickUp)
 		{
 			if (MaxPickUps != 0)
@@ -56,6 +58,19 @@ void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp,
 				{
 					NewSegment->SpawnPickUp();
 					MaxPickUps--;
+					bOccupied = true;
+				}
+			}
+		}
+
+		if (bCanSpawnObstacles && !bOccupied)
+		{
+			if (MaxObstacles != 0)
+			{
+				if (FMath::RandRange(0, ObstacleSpawnVariance) == ObstacleSpawnVariance)
+				{
+					NewSegment->SpawnObstacle();
+					MaxObstacles--;
 				}
 			}
 		}
