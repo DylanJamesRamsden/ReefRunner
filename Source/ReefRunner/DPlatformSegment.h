@@ -7,6 +7,7 @@
 #include "DPlatformSegment.generated.h"
 
 class ADPickUp;
+class ADObstacle;
 
 UCLASS()
 class REEFRUNNER_API ADPlatformSegment : public AStaticMeshActor
@@ -22,8 +23,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ADPickUp> PickUpTemplate;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ADObstacle> ObstacleTemplate;
+
 	UPROPERTY()
 	ADPickUp* MyPickUp;
+
+	UPROPERTY()
+	ADObstacle* MyObstacle;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,5 +46,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void SpawnPickUp();
+
+	void SpawnObstacle();
 
 };

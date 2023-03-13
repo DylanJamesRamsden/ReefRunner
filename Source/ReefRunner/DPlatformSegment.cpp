@@ -3,6 +3,7 @@
 
 #include "DPlatformSegment.h"
 
+#include "DObstacle.h"
 #include "DPickUp.h"
 
 // Sets default values
@@ -35,6 +36,18 @@ void ADPlatformSegment::SpawnPickUp()
 		{
 			MyPickUp = NewPickUp;
 			NewPickUp->SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 150.0f));	
+		}
+	}
+}
+
+void ADPlatformSegment::SpawnObstacle()
+{
+	if (ObstacleTemplate)
+	{
+		if (ADObstacle* NewObstacle = GetWorld()->SpawnActor<ADObstacle>(ObstacleTemplate))
+		{
+			MyObstacle = NewObstacle;
+			NewObstacle->SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 50.0f));	
 		}
 	}
 }
