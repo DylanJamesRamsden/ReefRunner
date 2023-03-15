@@ -20,7 +20,7 @@ ADCharacter::ADCharacter()
 
 	SpringArmComp->bEnableCameraLag;
 	SpringArmComp->TargetArmLength = 600.0f;
-	SpringArmComp->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f))
+	SpringArmComp->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f));
 }
 
 // Called when the game starts or when spawned
