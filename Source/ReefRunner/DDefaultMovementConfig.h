@@ -16,6 +16,7 @@ class REEFRUNNER_API UDDefaultMovementConfig : public UDataAsset
 {
 	GENERATED_BODY()
 
+public:
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* HorizontalMovementIA;
 };
