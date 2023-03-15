@@ -3,8 +3,13 @@
 
 #include "DCharacter.h"
 
+#include "DDefaultMovementConfig.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "EnhancedInputComponent.h"
+
+#include "EnhancedInput/Public/InputMappingContext.h"
+#include "EnhancedInput/Public/EnhancedInputSubsystems.h"
 
 // Sets default values
 ADCharacter::ADCharacter()
@@ -30,6 +35,11 @@ void ADCharacter::BeginPlay()
 	
 }
 
+void ADCharacter::HorizontalMovement(const FInputActionValue& Value)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Horizontal Movement"));
+}
+
 // Called every frame
 void ADCharacter::Tick(float DeltaTime)
 {
@@ -40,14 +50,22 @@ void ADCharacter::Tick(float DeltaTime)
 // Called to bind functionality to input
 void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	//Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		UEnhancedInputLocalPlayerSubsystem* EnhancedInputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
+		EnhancedInputSubsystem->ClearAllMappings();
+		check(DefaultMovementIMC);
+		EnhancedInputSubsystem->AddMappingContext(DefaultMovementIMC, 0);
+
+		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+		EnhancedInputComponent->BindAction(DefaultMovementConfig->HorizontalMovementIA, ETriggerEvent::Triggered, this, &ADCharacter::HorizontalMovement);
+	}
 }
 
 void ADCharacter::PossessedBy(AController* NewController)
 {
-
-
 	Super::PossessedBy(NewController);
 
 	if (APlayerController* PC = Cast<APlayerController>(NewController))

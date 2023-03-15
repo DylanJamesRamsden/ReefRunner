@@ -8,6 +8,9 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UInputMappingContext;
+class UDDefaultMovementConfig;
+struct FInputActionValue;
 
 UCLASS()
 class REEFRUNNER_API ADCharacter : public ACharacter
@@ -25,9 +28,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* CameraComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputMappingContext* DefaultMovementIMC;
+	
+	UPROPERTY(EditDefaultsOnly)
+	UDDefaultMovementConfig* DefaultMovementConfig;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void HorizontalMovement(const FInputActionValue& Value);
 
 public:	
 	// Called every frame
