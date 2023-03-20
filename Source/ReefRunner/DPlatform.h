@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "DPlatform.generated.h"
 
+class ADObstacle;
+class ADPickUp;
 class ADPlatformSegment;
 
 UCLASS()
@@ -21,7 +23,7 @@ protected:
 
 	// The segment template to spawn
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ADPlatformSegment> SegmentTemplate;
+	UStaticMeshComponent* StaticMeshComp;
 
 	FVector SpawnOrigin;
 
@@ -32,11 +34,24 @@ protected:
 	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "1.0", ClampMax = "10.0"))
 	int NumSegmentsToSpawn;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ADPickUp> PickUpTemplate;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ADObstacle> ObstacleTemplate;
+
 	UPROPERTY()
-	TArray<ADPlatformSegment*> Segments;
+	TArray<ADPickUp*> MyPickUps;
+
+	UPROPERTY()
+	TArray<ADObstacle*> MyObstacles;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void SpawnPickUp();
+
+	void SpawnObstacle();
 
 public:	
 	// Called every frame

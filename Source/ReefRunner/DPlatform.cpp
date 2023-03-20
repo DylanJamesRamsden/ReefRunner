@@ -3,6 +3,8 @@
 
 #include "DPlatform.h"
 
+#include "DObstacle.h"
+#include "DPickUp.h"
 #include "DPlatformSegment.h"
 
 // Sets default values
@@ -11,6 +13,8 @@ ADPlatform::ADPlatform()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+	StaticMeshComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -30,7 +34,7 @@ void ADPlatform::Tick(float DeltaTime)
 void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
 	bool bCanSpawnObstacles, int MaxObstacles, int ObstacleSpawnVariance)
 {
-	SpawnOrigin.X = GetActorLocation().X;
+	/*SpawnOrigin.X = GetActorLocation().X;
 
 	if (bShouldSpawnFromRight)
 	{
@@ -85,6 +89,30 @@ void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp,
 		}
 
 		Segments.Add(NewSegment);
+	}*/
+}
+
+void ADPlatform::SpawnPickUp()
+{
+	if (PickUpTemplate)
+	{
+		if (ADPickUp* NewPickUp = GetWorld()->SpawnActor<ADPickUp>(PickUpTemplate))
+		{
+			MyPickUps.Add(NewPickUp);
+			NewPickUp->SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 150.0f));	
+		}
+	}
+}
+
+void ADPlatform::SpawnObstacle()
+{
+	if (ObstacleTemplate)
+	{
+		if (ADObstacle* NewObstacle = GetWorld()->SpawnActor<ADObstacle>(ObstacleTemplate))
+		{
+			MyObstacles.Add(NewObstacle);
+			NewObstacle->SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 50.0f));	
+		}
 	}
 }
 
