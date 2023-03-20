@@ -29,10 +29,7 @@ void ADPlatformGenerator::BeginPlay()
 
 void ADPlatformGenerator::SpawnPlatform()
 {
-	//DrawDebugBox(GetWorld(), GetActorLocation(), FVector(25,25,25), FColor::Yellow, true, -1, 0, 10);
-	//DrawDebugBox(GetWorld(), SpawnOrigin, FVector(25,25,25), FColor::Red, true, -1, 0, 10);
-
-	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate);
+	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate, SpawnOrigin, FRotator::ZeroRotator);
 	if (NewPlatform)
 	{
 		PlatformsSinceLastPickUp++;
@@ -51,7 +48,6 @@ void ADPlatformGenerator::SpawnPlatform()
 			bCanSpawnObstacle = FMath::RandRange(0, ObstaclesPlatformSpawnVariance) == ObstaclesPlatformSpawnVariance;
 		}
 		
-		NewPlatform->SetActorLocation(SpawnOrigin);
 		NewPlatform->SpawnSegments(bSpawningFromRight,
 			bCanSpawnPickUp,
 			MaxPickUpsPerPlatform,
