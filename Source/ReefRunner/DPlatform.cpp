@@ -5,7 +5,6 @@
 
 #include "DObstacle.h"
 #include "DPickUp.h"
-#include "DPlatformSegment.h"
 
 // Sets default values
 ADPlatform::ADPlatform()

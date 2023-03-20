@@ -8,7 +8,6 @@
 
 class ADObstacle;
 class ADPickUp;
-class ADPlatformSegment;
 
 UCLASS()
 class REEFRUNNER_API ADPlatform : public AActor
