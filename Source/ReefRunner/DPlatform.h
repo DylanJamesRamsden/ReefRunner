@@ -34,6 +34,9 @@ protected:
 	int NumSegmentsToSpawn;
 
 	UPROPERTY(EditDefaultsOnly)
+	TArray<FVector> SpawnSlotLocations;
+
+	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ADPickUp> PickUpTemplate;
 
 	UPROPERTY(EditDefaultsOnly)

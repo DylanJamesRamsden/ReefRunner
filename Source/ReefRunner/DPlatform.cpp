@@ -21,6 +21,20 @@ void ADPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	const FVector Extent = FVector(StaticMeshComp->GetStaticMesh()->GetExtendedBounds().BoxExtent);
+	const float Divisor = (Extent.Y * 2) / 7;
+	
+	FVector CurrentSpawnSlotLocation = RootComponent->GetComponentLocation() -
+		FVector(0.0f, Divisor * FMath::Floor(Extent.Y/Divisor), -Extent.Z * 2);
+	
+	for (int i = 0; i < Extent.Y * 2 / Divisor; i++)
+	{
+		DrawDebugPoint(GetWorld(), CurrentSpawnSlotLocation, 10, FColor::Red, false, 2.0f);
+
+		SpawnSlotLocations.Add(CurrentSpawnSlotLocation);
+		
+		CurrentSpawnSlotLocation += FVector(0.0f, 100.0f, 0.0f);
+	}
 }
 
 // Called every frame
