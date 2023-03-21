@@ -36,8 +36,6 @@ protected:
 	// Where the first segment of a platform spawns
 	FVector SpawnOrigin;
 
-	bool bSpawningFromRight = true;
-
 	// The platform template to spawn
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	TSubclassOf<ADPlatform> PlatformTemplate;

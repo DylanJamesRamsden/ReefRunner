@@ -48,8 +48,8 @@ void ADPlatformGenerator::SpawnPlatform()
 			bCanSpawnObstacle = FMath::RandRange(0, ObstaclesPlatformSpawnVariance) == ObstaclesPlatformSpawnVariance;
 		}
 		
-		NewPlatform->SpawnSegments(bSpawningFromRight,
-			bCanSpawnPickUp,
+		NewPlatform->InitializeSpawnSlots();
+		NewPlatform->SpawnItems(bCanSpawnPickUp,
 			MaxPickUpsPerPlatform,
 			PickUpSpawnVariance,
 			bCanSpawnObstacle,
@@ -67,15 +67,6 @@ void ADPlatformGenerator::SpawnPlatform()
 		}
 
 		SpawnOrigin.X = SpawnOrigin.X + 100.0f;
-
-		if (!bSpawningFromRight)
-		{
-			bSpawningFromRight = true;
-		}
-		else
-		{
-			bSpawningFromRight = false;
-		}
 
 		Platforms.Add(NewPlatform);
 
