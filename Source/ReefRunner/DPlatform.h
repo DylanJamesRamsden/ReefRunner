@@ -24,10 +24,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* StaticMeshComp;
 
-	FVector SpawnOrigin;
-
-	bool bSpawningFromRight;
-
 	// How many individual static meshes make up a platform
 	// @TODO It would be fun to randomize this
 	UPROPERTY(EditDefaultsOnly, meta = (ClampMin = "1.0", ClampMax = "10.0"))
@@ -51,14 +47,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void SpawnPickUp();
+	void SpawnPickUp(FVector Location);
 
-	void SpawnObstacle();
+	void SpawnObstacle(FVector Location);
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void InitializeSpawnSlots();
 	
-	void SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
+	void SpawnItems(bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
 		bool bCanSpawnObstacles, int MaxObstacles, int ObstacleSpawnVariance);
 };

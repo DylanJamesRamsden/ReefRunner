@@ -21,6 +21,10 @@ void ADPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ADPlatform::InitializeSpawnSlots()
+{
 	const FVector Extent = FVector(StaticMeshComp->GetStaticMesh()->GetExtendedBounds().BoxExtent);
 	const float Divisor = (Extent.Y * 2) / 7;
 	
@@ -44,28 +48,11 @@ void ADPlatform::Tick(float DeltaTime)
 
 }
 
-void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
+void ADPlatform::SpawnItems(bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
 	bool bCanSpawnObstacles, int MaxObstacles, int ObstacleSpawnVariance)
 {
-	/*SpawnOrigin.X = GetActorLocation().X;
-
-	if (bShouldSpawnFromRight)
+	for (int i = 0; i < SpawnSlotLocations.Num(); i++)
 	{
-		SpawnOrigin.Y = GetActorLocation().Y + (((NumSegmentsToSpawn - 1)/2) * 100);
-	}
-	else
-	{
-		SpawnOrigin.Y = GetActorLocation().Y - (((NumSegmentsToSpawn - 1)/2) * 100);
-	}
-
-	bSpawningFromRight = bShouldSpawnFromRight;
-
-	for (int i = 0; i < NumSegmentsToSpawn; i++)
-	{
-		ADPlatformSegment* NewSegment = GetWorld()->SpawnActor<ADPlatformSegment>(SegmentTemplate);
-		NewSegment->GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
-		NewSegment->SetActorLocation(SpawnOrigin);
-
 		bool bOccupied = false;
 		if (bCanSpawnPickUp)
 		{
@@ -73,7 +60,7 @@ void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp,
 			{
 				if (FMath::RandRange(0, PickUpSpawnVariance) == PickUpSpawnVariance)
 				{
-					NewSegment->SpawnPickUp();
+					SpawnPickUp(SpawnSlotLocations[i]);
 					MaxPickUps--;
 					bOccupied = true;
 				}
@@ -86,45 +73,34 @@ void ADPlatform::SpawnSegments(bool bShouldSpawnFromRight, bool bCanSpawnPickUp,
 			{
 				if (FMath::RandRange(0, ObstacleSpawnVariance) == ObstacleSpawnVariance)
 				{
-					NewSegment->SpawnObstacle();
+					SpawnObstacle(SpawnSlotLocations[i]);
 					MaxObstacles--;
 				}
 			}
 		}
-
-		if (bSpawningFromRight)
-		{
-			SpawnOrigin.Y = SpawnOrigin.Y - NewSegment->SegmentWidth;
-		}
-		else
-		{
-			SpawnOrigin.Y = SpawnOrigin.Y + NewSegment->SegmentWidth;
-		}
-
-		Segments.Add(NewSegment);
-	}*/
+	}
 }
 
-void ADPlatform::SpawnPickUp()
+void ADPlatform::SpawnPickUp(FVector Location)
 {
 	if (PickUpTemplate)
 	{
 		if (ADPickUp* NewPickUp = GetWorld()->SpawnActor<ADPickUp>(PickUpTemplate))
 		{
 			MyPickUps.Add(NewPickUp);
-			NewPickUp->SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 150.0f));	
+			NewPickUp->SetActorLocation(Location + FVector(0.0f, 0.0f, 100.0f));	
 		}
 	}
 }
 
-void ADPlatform::SpawnObstacle()
+void ADPlatform::SpawnObstacle(FVector Location)
 {
 	if (ObstacleTemplate)
 	{
 		if (ADObstacle* NewObstacle = GetWorld()->SpawnActor<ADObstacle>(ObstacleTemplate))
 		{
 			MyObstacles.Add(NewObstacle);
-			NewObstacle->SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 50.0f));	
+			NewObstacle->SetActorLocation(Location);	
 		}
 	}
 }
