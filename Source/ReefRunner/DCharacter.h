@@ -34,6 +34,13 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly)
 	UDDefaultMovementConfig* DefaultMovementConfig;
+
+	bool bCanInterpHorizontalLocation;
+	
+	FVector HorizontalTargetLocation;
+
+	UPROPERTY(EditDefaultsOnly)
+	float HorizontalInterpSpeed = 50.0f;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

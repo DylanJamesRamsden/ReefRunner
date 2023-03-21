@@ -7,9 +7,12 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
+#include "Components/CapsuleComponent.h"
 
 #include "EnhancedInput/Public/InputMappingContext.h"
 #include "EnhancedInput/Public/EnhancedInputSubsystems.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ADCharacter::ADCharacter()
@@ -32,12 +35,19 @@ ADCharacter::ADCharacter()
 void ADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ADCharacter::HorizontalMovement(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Horizontal Movement"));
+	if (!bCanInterpHorizontalLocation)
+	{
+		bCanInterpHorizontalLocation = true;
+		HorizontalTargetLocation = GetActorLocation() + (GetActorRightVector() + Value.Get<float>() * 100.0f);
+	}
+	else
+	{
+		HorizontalTargetLocation = FVector(HorizontalTargetLocation.X, HorizontalTargetLocation.Y + Value.Get<float>() * 100.0f, HorizontalTargetLocation.Z);
+	}
 }
 
 // Called every frame
@@ -45,6 +55,19 @@ void ADCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bCanInterpHorizontalLocation)
+	{
+		SetActorLocation(FMath::VInterpTo(GetActorLocation(), FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z), DeltaTime, 15.0f));
+
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, FString::SanitizeFloat(GetActorLocation().Y));
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(HorizontalTargetLocation.Y));
+
+		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 0.01))
+		{
+			SetActorLocation(FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z));
+			bCanInterpHorizontalLocation = false;
+		}
+	}
 }
 
 // Called to bind functionality to input
