@@ -28,7 +28,8 @@ ADCharacter::ADCharacter()
 
 	SpringArmComp->bEnableCameraLag;
 	SpringArmComp->TargetArmLength = 600.0f;
-	SpringArmComp->SetRelativeRotation(FRotator(-20.0f, 0.0f, 0.0f));
+	SpringArmComp->SetRelativeRotation(FRotator(-40.0f, 0.0f, 0.0f));
+	SpringArmComp->bDoCollisionTest = false;
 }
 
 // Called when the game starts or when spawned
@@ -55,6 +56,8 @@ void ADCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AddMovementInput(GetActorForwardVector() * .2f);
+
 	if (bCanInterpHorizontalLocation)
 	{
 		SetActorLocation(FMath::VInterpTo(GetActorLocation(), FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z), DeltaTime, 15.0f));
@@ -62,7 +65,7 @@ void ADCharacter::Tick(float DeltaTime)
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, FString::SanitizeFloat(GetActorLocation().Y));
 		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(HorizontalTargetLocation.Y));
 
-		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 0.01))
+		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 0.0001F))
 		{
 			SetActorLocation(FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z));
 			bCanInterpHorizontalLocation = false;
