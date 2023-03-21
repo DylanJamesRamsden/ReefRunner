@@ -15,7 +15,7 @@ ADObstacle::ADObstacle()
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>("BoxComp");
 
 	StaticMeshComp->SetupAttachment(RootComponent);
-	BoxComponent->SetupAttachment(RootComponent);
+	BoxComponent->SetupAttachment(StaticMeshComp);
 
 	StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

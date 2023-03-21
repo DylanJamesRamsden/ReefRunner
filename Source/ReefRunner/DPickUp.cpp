@@ -15,7 +15,7 @@ ADPickUp::ADPickUp()
 	SphereComp = CreateDefaultSubobject<USphereComponent>("SphereComp");
 
 	StaticMeshComp->SetupAttachment(RootComponent);
-	SphereComp->SetupAttachment(RootComponent);
+	SphereComp->SetupAttachment(StaticMeshComp);
 
 	StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
@@ -38,6 +38,9 @@ void ADPickUp::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	Destroy();
+	if (APawn* OtherPawn = Cast<APawn>(OtherActor))
+	{
+		Destroy();
+	}
 }
 
