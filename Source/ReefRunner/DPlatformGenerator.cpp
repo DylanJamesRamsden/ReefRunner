@@ -3,7 +3,9 @@
 
 #include "DPlatformGenerator.h"
 
+#include "DCharacter.h"
 #include "DPlatform.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADPlatformGenerator::ADPlatformGenerator()
@@ -29,7 +31,7 @@ void ADPlatformGenerator::BeginPlay()
 
 void ADPlatformGenerator::SpawnPlatform()
 {
-	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate, SpawnOrigin, FRotator::ZeroRotator);
+	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate, GetActorLocation(), FRotator::ZeroRotator);
 	if (NewPlatform)
 	{
 		PlatformsSinceLastPickUp++;
@@ -65,8 +67,10 @@ void ADPlatformGenerator::SpawnPlatform()
 		{
 			PlatformsSinceLastObstacle = 0;
 		}
-
-		SpawnOrigin.X = SpawnOrigin.X + 100.0f;
+		
+		SetActorLocation(FVector(GetActorLocation().X + 100.0f, GetActorLocation().Y, GetActorLocation().Z));
+		DrawDebugSphere(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 100.0f),
+			50, 26, FColor::Yellow, false, 3.0f, 0, 2);
 
 		Platforms.Add(NewPlatform);
 
@@ -84,6 +88,6 @@ void ADPlatformGenerator::SpawnPlatform()
 void ADPlatformGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
