@@ -7,6 +7,7 @@
 #include "DPlatformGenerator.generated.h"
 
 class ADPlatform;
+class ADCleanUpBox;
 
 	// General note to self:
 	// X axis if forward in the spawners case
@@ -86,15 +87,17 @@ protected:
 	// (0 - ObstacleSpawnVariance == ObstacleSpawnVariance)
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Obstacles")
 	int ObstacleSpawnVariance;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ADCleanUpBox> CleanUpBoxTemplate;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void SpawnPlatform();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void SpawnPlatform();
 };

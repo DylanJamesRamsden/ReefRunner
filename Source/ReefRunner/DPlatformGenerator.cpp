@@ -3,7 +3,7 @@
 
 #include "DPlatformGenerator.h"
 
-#include "DCharacter.h"
+#include "DCleanUpBox.h"
 #include "DPlatform.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -26,6 +26,12 @@ void ADPlatformGenerator::BeginPlay()
 		SpawnOrigin.Y = GetActorLocation().Y;
 
 		GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);	
+	}
+
+	if (CleanUpBoxTemplate)
+	{
+		ADCleanUpBox* NewCleanUpBox = GetWorld()->SpawnActor<ADCleanUpBox>(CleanUpBoxTemplate, GetActorLocation() + (GetActorForwardVector() * -500.0f), FRotator::ZeroRotator);
+		NewCleanUpBox->SetPlatformGenerator(this);
 	}
 }
 
