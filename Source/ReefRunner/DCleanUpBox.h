@@ -7,7 +7,8 @@
 #include "DCleanUpBox.generated.h"
 
 class UBoxComponent;
-class ADPlatformGenerator;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlatformDestroyed);
 
 UCLASS()
 class REEFRUNNER_API ADCleanUpBox : public AActor
@@ -22,18 +23,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* BoxComp;
-
-	UPROPERTY()
-	ADPlatformGenerator* MyPlatformGenerator;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
-public:	
+public:
+	FPlatformDestroyed OnPlatformDestroyed;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	void SetPlatformGenerator(ADPlatformGenerator* PlatformGenerator);
 };

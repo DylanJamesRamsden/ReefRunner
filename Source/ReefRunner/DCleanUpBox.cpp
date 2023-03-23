@@ -4,7 +4,6 @@
 #include "DCleanUpBox.h"
 
 #include "DPlatform.h"
-#include "DPlatformGenerator.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -40,7 +39,7 @@ void ADCleanUpBox::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if (ADPlatform* OverlappingPlatform = Cast<ADPlatform>(OtherActor))
 	{
-		MyPlatformGenerator->SpawnPlatform();
+		OnPlatformDestroyed.Broadcast();
 	}
 
 	OtherActor->Destroy();
@@ -51,11 +50,6 @@ void ADCleanUpBox::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-}
-
-void ADCleanUpBox::SetPlatformGenerator(ADPlatformGenerator* PlatformGenerator)
-{
-	MyPlatformGenerator = PlatformGenerator;
 }
 
 

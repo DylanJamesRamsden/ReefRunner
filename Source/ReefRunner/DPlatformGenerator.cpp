@@ -31,7 +31,7 @@ void ADPlatformGenerator::BeginPlay()
 	if (CleanUpBoxTemplate)
 	{
 		ADCleanUpBox* NewCleanUpBox = GetWorld()->SpawnActor<ADCleanUpBox>(CleanUpBoxTemplate, GetActorLocation() + (GetActorForwardVector() * -500.0f), FRotator::ZeroRotator);
-		NewCleanUpBox->SetPlatformGenerator(this);
+		NewCleanUpBox->OnPlatformDestroyed.AddDynamic(this, &ADPlatformGenerator::SpawnPlatform);
 	}
 }
 
