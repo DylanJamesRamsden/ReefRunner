@@ -87,6 +87,7 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 		UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 		EnhancedInputComponent->BindAction(DefaultMovementConfig->HorizontalMovementIA, ETriggerEvent::Triggered, this, &ADCharacter::HorizontalMovement);
+		EnhancedInputComponent->BindAction(DefaultMovementConfig->JumpIA, ETriggerEvent::Triggered, this, &ADCharacter::Jump);
 	}
 }
 
