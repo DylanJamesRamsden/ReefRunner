@@ -7,7 +7,6 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
-#include "Components/CapsuleComponent.h"
 
 #include "EnhancedInput/Public/InputMappingContext.h"
 #include "EnhancedInput/Public/EnhancedInputSubsystems.h"
@@ -30,6 +29,8 @@ ADCharacter::ADCharacter()
 	SpringArmComp->TargetArmLength = 600.0f;
 	SpringArmComp->SetRelativeRotation(FRotator(-40.0f, 0.0f, 0.0f));
 	SpringArmComp->bDoCollisionTest = false;
+
+	GetCharacterMovement()->JumpZVelocity = 600.0f;
 }
 
 // Called when the game starts or when spawned
