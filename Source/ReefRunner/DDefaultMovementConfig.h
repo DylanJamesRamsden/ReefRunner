@@ -19,4 +19,7 @@ class REEFRUNNER_API UDDefaultMovementConfig : public UDataAsset
 public:
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* HorizontalMovementIA;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* JumpIA;
 };
