@@ -41,10 +41,12 @@ void ADCharacter::BeginPlay()
 
 void ADCharacter::HorizontalMovement(const FInputActionValue& Value)
 {
+	OnMovingHorizontally(GetActorRightVector() + Value.Get<float>());
+	
 	if (!bCanInterpHorizontalLocation)
 	{
 		bCanInterpHorizontalLocation = true;
-		HorizontalTargetLocation = GetActorLocation() + (GetActorRightVector() + Value.Get<float>() * 100.0f);
+		HorizontalTargetLocation = GetActorLocation() + ((GetActorRightVector() + Value.Get<float>() * 100.0f) - GetActorRightVector());
 	}
 	else
 	{
@@ -57,16 +59,20 @@ void ADCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AddMovementInput(GetActorForwardVector() * .2f);
+	AddMovementInput(GetActorForwardVector() * .4f);
 
 	if (bCanInterpHorizontalLocation)
 	{
 		SetActorLocation(FMath::VInterpTo(GetActorLocation(), FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z), DeltaTime, 15.0f));
+		
+		// (Cosmetic!!) Added this extra check to allow time for the Character's rotation to be leveled out when reaching it's
+		// horizontal destination
+		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 2.0F))
+		{
+			OnArrivedHorizontally();
+		}
 
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Green, FString::SanitizeFloat(GetActorLocation().Y));
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::SanitizeFloat(HorizontalTargetLocation.Y));
-
-		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 0.0001F))
+		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 0.1F))
 		{
 			SetActorLocation(FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z));
 			bCanInterpHorizontalLocation = false;

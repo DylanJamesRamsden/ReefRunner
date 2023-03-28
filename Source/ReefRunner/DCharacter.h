@@ -47,6 +47,15 @@ protected:
 
 	void HorizontalMovement(const FInputActionValue& Value);
 
+	/** Notifies when DCharacter is moving horizontally
+	 * @param Direction The horizontal direction in which DCharacter is moving */
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
+	void OnMovingHorizontally(FVector Direction);
+
+	// Notifies when DCharacter has completed it's horizontal movement
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
+	void OnArrivedHorizontally();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
