@@ -66,9 +66,11 @@ protected:
 
 	bool bIsJumping;
 
+	// Notifies when DCharacter has started jumping
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
-	void OnJumping();
+	void OnJumpingStarted();
 
+	// Notifies when DCharacter has completed it's jump (landed)
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
 	void OnJumpingComplete();
 

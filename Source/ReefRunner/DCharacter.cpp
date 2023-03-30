@@ -59,7 +59,7 @@ void ADCharacter::Jump()
 {
 	Super::Jump();
 
-	OnJumping();
+	OnJumpingStarted();
 
 	bIsJumping = true;
 }
