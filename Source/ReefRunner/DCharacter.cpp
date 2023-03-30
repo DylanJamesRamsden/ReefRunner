@@ -31,6 +31,7 @@ ADCharacter::ADCharacter()
 	SpringArmComp->bDoCollisionTest = false;
 
 	GetCharacterMovement()->JumpZVelocity = 600.0f;
+	GetCharacterMovement()->bNotifyApex = true;
 }
 
 // Called when the game starts or when spawned
@@ -54,6 +55,27 @@ void ADCharacter::HorizontalMovement(const FInputActionValue& Value)
 	}
 }
 
+void ADCharacter::Jump()
+{
+	Super::Jump();
+
+	OnJumping();
+
+	bIsJumping = true;
+}
+
+void ADCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+
+	if (bIsJumping)
+	{
+		OnJumpingComplete();
+
+		bIsJumping = false;
+	}
+}
+
 // Called every frame
 void ADCharacter::Tick(float DeltaTime)
 {
@@ -69,7 +91,7 @@ void ADCharacter::Tick(float DeltaTime)
 		// horizontal destination
 		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 2.0F))
 		{
-			OnArrivedHorizontally();
+			OnMovingHorizontallyComplete();
 		}
 
 		if (UKismetMathLibrary::NearlyEqual_FloatFloat(GetActorLocation().Y, HorizontalTargetLocation.Y, 0.1F))

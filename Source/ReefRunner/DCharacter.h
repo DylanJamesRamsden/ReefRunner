@@ -22,13 +22,18 @@ public:
 	ADCharacter();
 
 protected:
-
+	
 	UPROPERTY(EditDefaultsOnly)
 	USpringArmComponent* SpringArmComp;
 
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* CameraComp;
+	
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
+	// ~ MOVEMENT
+	
 	UPROPERTY(EditDefaultsOnly)
 	UInputMappingContext* DefaultMovementIMC;
 	
@@ -41,9 +46,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float HorizontalInterpSpeed = 50.0f;
-	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	void HorizontalMovement(const FInputActionValue& Value);
 
@@ -54,7 +56,27 @@ protected:
 
 	// Notifies when DCharacter has completed it's horizontal movement
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
-	void OnArrivedHorizontally();
+	void OnMovingHorizontallyComplete();
+
+	// ~ END MOVEMENT
+
+	// ~ JUMPING
+
+	virtual void Jump() override;
+
+	bool bIsJumping;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
+	void OnJumping();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
+	void OnJumpingComplete();
+
+	// ~ END JUMPING
+
+	// ~ ACHARACTER OVERRIDES
+	virtual void Landed(const FHitResult& Hit) override;
+	// ~ END ACHARACTER OVERRIDES
 
 public:	
 	// Called every frame
@@ -63,5 +85,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// ~ APAWN OVERRIDES
 	virtual void PossessedBy(AController* NewController) override;
+	// ~ END APAWN OVERRIDES
 };
