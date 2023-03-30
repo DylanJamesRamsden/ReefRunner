@@ -9,9 +9,32 @@
 /**
  * 
  */
+
+UENUM()
+enum EGameplayState
+{
+	None,
+	Generating,
+	WaitingToStart,
+	Started,
+	Ended
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayStateChanged, EGameplayState, NewState);
+
 UCLASS()
 class REEFRUNNER_API ADGameplayGameState : public AGameStateBase
 {
 	GENERATED_BODY()
-	
+
+protected:
+	EGameplayState GameplayState = None;
+
+public:
+
+	FOnGameplayStateChanged OnGameplayStateChanged;
+
+	void SetNextGameplayState();
+
+	EGameplayState GetCurrentGameplayState() const;
 };
