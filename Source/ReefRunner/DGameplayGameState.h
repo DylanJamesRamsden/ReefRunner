@@ -6,10 +6,6 @@
 #include "GameFramework/GameStateBase.h"
 #include "DGameplayGameState.generated.h"
 
-/**
- * 
- */
-
 UENUM()
 enum EGameplayState
 {
@@ -22,6 +18,9 @@ enum EGameplayState
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayStateChanged, EGameplayState, NewState);
 
+/**
+ * 
+ */
 UCLASS()
 class REEFRUNNER_API ADGameplayGameState : public AGameStateBase
 {
