@@ -11,6 +11,9 @@ ADObstacle::ADObstacle()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Manually setting the RootComp as a SceneComp, was throwing a weird warning so just clearing up the log spam
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>("RootComponent"));
+
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>("BoxComp");
 
