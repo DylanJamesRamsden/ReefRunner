@@ -24,6 +24,8 @@ void ADGameplayGameState::SetNextGameplayState()
 	}
 
 	OnGameplayStateChanged.Broadcast(GameplayState);
+
+	UE_LOG(LogTemp, Log, TEXT("GameplayState changed, new state: %s"), *UEnum::GetValueAsString(GameplayState));
 }
 
 EGameplayState ADGameplayGameState::GetCurrentGameplayState() const
