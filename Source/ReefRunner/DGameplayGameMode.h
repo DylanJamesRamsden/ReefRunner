@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "DGameplayGameMode.generated.h"
 
+class ADGameplayGameState;
+
 /**
  * 
  */
@@ -13,5 +15,11 @@ UCLASS()
 class REEFRUNNER_API ADGameplayGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+protected:
+
+	UPROPERTY()
+	ADGameplayGameState* MyGameState;
+
+	virtual void BeginPlay() override;
 };
