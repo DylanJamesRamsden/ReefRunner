@@ -25,7 +25,8 @@ ADCharacter::ADCharacter()
 	SpringArmComp->SetupAttachment(RootComponent);
 	CameraComp->SetupAttachment(SpringArmComp);
 
-	SpringArmComp->bEnableCameraLag;
+	SpringArmComp->bEnableCameraLag = true;
+	SpringArmComp->CameraLagSpeed = 7.5f;
 	SpringArmComp->TargetArmLength = 600.0f;
 	SpringArmComp->SetRelativeRotation(FRotator(-40.0f, 0.0f, 0.0f));
 	SpringArmComp->bDoCollisionTest = false;
@@ -85,7 +86,7 @@ void ADCharacter::Tick(float DeltaTime)
 
 	if (bCanInterpHorizontalLocation)
 	{
-		SetActorLocation(FMath::VInterpTo(GetActorLocation(), FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z), DeltaTime, 15.0f));
+		SetActorLocation(FMath::VInterpTo(GetActorLocation(), FVector(GetActorLocation().X, HorizontalTargetLocation.Y, GetActorLocation().Z), DeltaTime, HorizontalInterpSpeed));
 		
 		// (Cosmetic!!) Added this extra check to allow time for the Character's rotation to be leveled out when reaching it's
 		// horizontal destination
