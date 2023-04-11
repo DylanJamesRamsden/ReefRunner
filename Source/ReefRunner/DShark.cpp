@@ -40,7 +40,6 @@ void ADShark::Tick(float DeltaSeconds)
 
 	if (bCanInterpHorizontalLocation)
 	{
-		//SetActorLocation(FMath::VInterpTo(GetActorLocation(), TargetLocation, DeltaSeconds, 2.5f));
 		const float NewY = FMath::FInterpConstantTo(ActorLocation.Y, TargetLocation.Y, DeltaSeconds, HorizontalInterpSpeed);
 		SetActorLocation(FVector(ActorLocation.X, NewY, ActorLocation.Z));
 
