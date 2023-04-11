@@ -24,15 +24,18 @@ void ADShark::Tick(float DeltaSeconds)
 		
 			const bool bOverlappedObstacleOnRight = IsOverlappingObstacleAtLocation(OutForwardCheckActors[0]->GetActorLocation() + (GetActorRightVector() * 100), OutRightCheckActors);
 			const bool bOverlappedObstacleOnLeft = IsOverlappingObstacleAtLocation(OutForwardCheckActors[0]->GetActorLocation() + (-GetActorRightVector() * 100), OutLeftCheckActors);
-
-			bCanInterpHorizontalLocation = true;
+			
 			if (!bOverlappedObstacleOnRight)
 			{
+				bCanInterpHorizontalLocation = true;
 				TargetLocation = ActorLocation + (GetActorRightVector() * 100.0f);
+				OnMovingHorizontally(1.0f);
 			}
 			else if (!bOverlappedObstacleOnLeft)
 			{
+				bCanInterpHorizontalLocation = true;
 				TargetLocation = ActorLocation + (-GetActorRightVector() * 100.0f);
+				OnMovingHorizontally(-1.0f);
 			}
 			else UE_LOG(LogTemp, Warning, TEXT("DShark only has logic to dodge 2 obstacles next to eachother! Look into this!"));
 		}	
@@ -47,6 +50,7 @@ void ADShark::Tick(float DeltaSeconds)
 		{
 			SetActorLocation(FVector(ActorLocation.X, TargetLocation.Y, ActorLocation.Z));
 			bCanInterpHorizontalLocation = false;
+			OnMovingHorizontallyComplete();
 		}
 	}
 }
@@ -55,7 +59,7 @@ bool ADShark::IsOverlappingObstacleAtLocation(FVector Location, TArray<AActor*>&
 {
 	const TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	const TArray<AActor*> ActorsToIgnore;
-	bool bOverlappedWithObstacle = UKismetSystemLibrary::BoxOverlapActors(GetWorld(), Location, FVector(10.0f, 10.0f, 10.0f), ObjectTypes,
+	const bool bOverlappedWithObstacle = UKismetSystemLibrary::BoxOverlapActors(GetWorld(), Location, FVector(10.0f, 10.0f, 10.0f), ObjectTypes,
 		ADObstacle::StaticClass(), ActorsToIgnore, OutActors);
 
 	if (!bOverlappedWithObstacle)

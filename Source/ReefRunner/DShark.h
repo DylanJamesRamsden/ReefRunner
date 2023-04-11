@@ -29,4 +29,11 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 
 	bool IsOverlappingObstacleAtLocation(FVector Location, TArray<AActor*>& OutActors) const;
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
+	void OnMovingHorizontally(float Direction);
+
+	// Notifies when DCharacter has completed it's horizontal movement
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCosmetic)
+	void OnMovingHorizontallyComplete();
 };
