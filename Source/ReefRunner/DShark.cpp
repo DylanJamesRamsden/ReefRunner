@@ -3,8 +3,8 @@
 
 #include "DShark.h"
 
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 void ADShark::Tick(float DeltaSeconds)
 {
