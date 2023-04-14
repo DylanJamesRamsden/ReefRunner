@@ -29,5 +29,6 @@ protected:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	UFUNCTION()
 	void OnGameplayStateChanged(EGameplayState NewState);
 };

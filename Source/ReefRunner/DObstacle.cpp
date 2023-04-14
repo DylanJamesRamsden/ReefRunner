@@ -10,6 +10,7 @@ ADObstacle::ADObstacle()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 
 	// Manually setting the RootComp as a SceneComp, was throwing a weird warning so just clearing up the log spam
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("RootComponent"));
@@ -27,9 +28,7 @@ ADObstacle::ADObstacle()
 void ADObstacle::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// By default Obstacles don't need to tick
-	SetActorTickEnabled(false);
+	
 }
 
 // Called every frame
