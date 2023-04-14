@@ -22,4 +22,8 @@ protected:
 	ADGameplayGameState* MyGameState;
 
 	virtual void BeginPlay() override;
+
+	// Starts the game. Sets the gameplay state to 'Started'
+	UFUNCTION(Exec)
+	void StartGame() const;
 };

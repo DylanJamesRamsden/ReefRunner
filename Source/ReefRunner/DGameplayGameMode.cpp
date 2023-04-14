@@ -21,3 +21,11 @@ void ADGameplayGameMode::BeginPlay()
 	}
 	else UE_LOG(LogTemp, Error, TEXT("No GameState found! This has to be a timing issue!"));
 }
+
+void ADGameplayGameMode::StartGame() const
+{
+	if (MyGameState)
+	{
+		MyGameState->SetGameplayState(Started);
+	}
+}

@@ -28,6 +28,13 @@ void ADGameplayGameState::SetNextGameplayState()
 	UE_LOG(LogTemp, Log, TEXT("GameplayState changed, new state: %s"), *UEnum::GetValueAsString(GameplayState));
 }
 
+void ADGameplayGameState::SetGameplayState(EGameplayState NewState)
+{
+	GameplayState = NewState;
+
+	OnGameplayStateChanged.Broadcast(NewState);
+}
+
 EGameplayState ADGameplayGameState::GetCurrentGameplayState() const
 {
 	return GameplayState;

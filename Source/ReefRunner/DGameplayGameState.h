@@ -33,7 +33,11 @@ public:
 
 	FOnGameplayStateChanged OnGameplayStateChanged;
 
+	// Sets the gameplay state to the next available gameplay state
 	void SetNextGameplayState();
+
+	// Sets the gameplay state to the specified gameplay state. Mostly used for commands!
+	void SetGameplayState(EGameplayState NewState);
 
 	EGameplayState GetCurrentGameplayState() const;
 };
