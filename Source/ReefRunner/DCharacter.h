@@ -11,6 +11,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UDDefaultMovementConfig;
 struct FInputActionValue;
+enum EGameplayState;
 
 UCLASS()
 class REEFRUNNER_API ADCharacter : public ACharacter
@@ -79,6 +80,9 @@ protected:
 	// ~ ACHARACTER OVERRIDES
 	virtual void Landed(const FHitResult& Hit) override;
 	// ~ END ACHARACTER OVERRIDES
+
+	UFUNCTION()
+	void OnGameplayStateChanged(EGameplayState NewState);
 
 public:	
 	// Called every frame
