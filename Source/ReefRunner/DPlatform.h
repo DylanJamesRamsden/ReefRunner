@@ -36,7 +36,7 @@ protected:
 	TSubclassOf<ADPickUp> PickUpTemplate;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<ADObstacle> ObstacleTemplate;
+	TArray<TSubclassOf<ADObstacle>> ObstacleTemplates;
 
 	UPROPERTY()
 	TArray<ADPickUp*> MyPickUps;

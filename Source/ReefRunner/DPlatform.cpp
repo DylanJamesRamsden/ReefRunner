@@ -98,13 +98,14 @@ void ADPlatform::SpawnPickUp(FVector Location)
 
 void ADPlatform::SpawnObstacle(FVector Location)
 {
-	if (ObstacleTemplate)
+	if (ObstacleTemplates.Num() > 0)
 	{
-		if (ADObstacle* NewObstacle = GetWorld()->SpawnActor<ADObstacle>(ObstacleTemplate))
+		if (ADObstacle* NewObstacle = GetWorld()->SpawnActor<ADObstacle>(ObstacleTemplates[FMath::RandRange(0, ObstacleTemplates.Num() - 1)]))
 		{
 			MyObstacles.Add(NewObstacle);
 			NewObstacle->SetActorLocation(Location);	
 		}
 	}
+	else UE_LOG(LogTemp, Warning, TEXT("No ObstacleTemplates set in %s, so cannot spawn any!"), *GetName());
 }
 
