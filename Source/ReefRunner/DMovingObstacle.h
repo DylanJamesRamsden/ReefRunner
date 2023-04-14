@@ -7,6 +7,7 @@
 #include "DMovingObstacle.generated.h"
 
 class UFloatingPawnMovement;
+enum EGameplayState;
 
 /**
  * 
@@ -16,10 +17,6 @@ class REEFRUNNER_API ADMovingObstacle : public ADObstacle
 {
 	GENERATED_BODY()
 
-public:
-
-	ADMovingObstacle();	
-
 protected:
 
 	UPROPERTY(EditDefaultsOnly)
@@ -28,5 +25,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	FVector MovementDirection;
 
+	virtual void BeginPlay() override;
+
 	virtual void Tick(float DeltaSeconds) override;
+
+	void OnGameplayStateChanged(EGameplayState NewState);
 };

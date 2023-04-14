@@ -27,7 +27,9 @@ ADObstacle::ADObstacle()
 void ADObstacle::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// By default Obstacles don't need to tick
+	SetActorTickEnabled(false);
 }
 
 // Called every frame
