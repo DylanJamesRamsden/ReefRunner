@@ -39,3 +39,26 @@ EGameplayState ADGameplayGameState::GetCurrentGameplayState() const
 {
 	return GameplayState;
 }
+
+void ADGameplayGameState::SetNextLevel()
+{
+	if (Level == MaxLevels)
+	{
+		Level = 1;
+	}
+	else Level++;
+
+	UE_LOG(LogTemp, Log, TEXT("Level changed, new level: %d"), Level);
+
+	OnLevelChanged.Broadcast(Level);
+}
+
+int32 ADGameplayGameState::GetCurrentLevel() const
+{
+	return Level;
+}
+
+int32 ADGameplayGameState::GetMaxLevels() const
+{
+	return MaxLevels;
+}

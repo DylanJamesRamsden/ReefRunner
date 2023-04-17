@@ -17,6 +17,7 @@ enum EGameplayState
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayStateChanged, EGameplayState, NewState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelChanged, int32, NewLevel);
 
 /**
  * 
@@ -29,6 +30,11 @@ class REEFRUNNER_API ADGameplayGameState : public AGameStateBase
 protected:
 	EGameplayState GameplayState = None;
 
+	UPROPERTY(EditDefaultsOnly)
+	int32 MaxLevels = 3;
+
+	int32 Level = 1;
+
 public:
 
 	FOnGameplayStateChanged OnGameplayStateChanged;
@@ -40,4 +46,12 @@ public:
 	void SetGameplayState(EGameplayState NewState);
 
 	EGameplayState GetCurrentGameplayState() const;
+
+	FOnLevelChanged OnLevelChanged;;
+	
+	void SetNextLevel();
+
+	int32 GetCurrentLevel() const;
+
+	int32 GetMaxLevels() const;
 };
