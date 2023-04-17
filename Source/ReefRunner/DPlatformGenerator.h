@@ -93,9 +93,33 @@ protected:
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 	UFUNCTION()
 	void SpawnPlatform();
+
+	// ¬ LEVEL TRANSITION
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Level Transition")
+	TArray<FLinearColor> LevelColors;
+	
+	bool bIsTransitioningLevel;
+
+	// THis could easily be done with a FVector2D (X for from and Y for to) but just clearer this way
+	int32 LevelToTransitionFrom;
+	int32 LevelToTransitionTo;
+
+	// How many platforms it takes to transition from one level to another
+	UPROPERTY(EditDefaultsOnly, Category = "Level Transition")
+	float NumberOfPlatformsForTransition = 15;
+
+	float CurrentPlatformsTransitioned;
+
+	FLinearColor CurrentPlatformColor;
+	
+	UFUNCTION()
+	void StartLevelTransition(int32 NewLevel);
+	
+	// ¬ END LEVEL TRANSITION
 
 public:	
 	// Called every frame
