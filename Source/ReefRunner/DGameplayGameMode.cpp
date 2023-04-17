@@ -29,3 +29,11 @@ void ADGameplayGameMode::StartGame() const
 		MyGameState->SetGameplayState(Started);
 	}
 }
+
+void ADGameplayGameMode::NextLevel() const
+{
+	if (MyGameState)
+	{
+		MyGameState->SetNextLevel();
+	}
+}

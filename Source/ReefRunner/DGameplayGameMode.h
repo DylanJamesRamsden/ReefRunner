@@ -26,4 +26,8 @@ protected:
 	// Starts the game. Sets the gameplay state to 'Started'
 	UFUNCTION(Exec)
 	void StartGame() const;
+
+	// Starts the game. Sets the gameplay state to 'Started'
+	UFUNCTION(Exec)
+	void NextLevel() const;
 };
