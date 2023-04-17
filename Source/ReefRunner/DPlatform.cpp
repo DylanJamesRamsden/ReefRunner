@@ -84,6 +84,18 @@ void ADPlatform::SpawnItems(bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpaw
 	}
 }
 
+void ADPlatform::SetColor(FLinearColor NewColor)
+{
+	if (UMaterialInterface* Material = StaticMeshComp->GetMaterial(0))
+	{
+		if (UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(Material, this))
+		{
+			DynamicMaterial->SetVectorParameterValue("Base Color", NewColor);
+			StaticMeshComp->SetMaterial(0, DynamicMaterial);
+		}
+	}
+}
+
 void ADPlatform::SpawnPickUp(FVector Location)
 {
 	if (PickUpTemplate)

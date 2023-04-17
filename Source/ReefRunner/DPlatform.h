@@ -59,4 +59,7 @@ public:
 	
 	void SpawnItems(bool bCanSpawnPickUp, int MaxPickUps, int PickUpSpawnVariance,
 		bool bCanSpawnObstacles, int MaxObstacles, int ObstacleSpawnVariance);
+
+	// Sets the base color of the platform's StaticMeshComp's material
+	void SetColor(FLinearColor NewColor);
 };
