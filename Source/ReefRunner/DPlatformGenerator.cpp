@@ -25,26 +25,14 @@ void ADPlatformGenerator::BeginPlay()
 	{
 		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
+			DGameState->OnGameplayStateChanged.AddDynamic(this, &ADPlatformGenerator::OnGameplayStateChanged);
+			
 			DGameState->OnLevelChanged.AddDynamic(this, &ADPlatformGenerator::StartLevelTransition);
 
 			check(LevelColors.Num() == DGameState->GetMaxLevels())
 
 			CurrentPlatformColor = LevelColors[DGameState->GetCurrentLevel() - 1];
 		}
-	}
-
-	if (PlatformTemplate)
-	{
-		SpawnOrigin.X = GetActorLocation().X;
-		SpawnOrigin.Y = GetActorLocation().Y;
-
-		GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);	
-	}
-
-	if (CleanUpBoxTemplate)
-	{
-		ADCleanUpBox* NewCleanUpBox = GetWorld()->SpawnActor<ADCleanUpBox>(CleanUpBoxTemplate, GetActorLocation() + (GetActorForwardVector() * -500.0f), FRotator::ZeroRotator);
-		NewCleanUpBox->OnPlatformDestroyed.AddDynamic(this, &ADPlatformGenerator::SpawnPlatform);
 	}
 }
 
@@ -150,5 +138,25 @@ void ADPlatformGenerator::StartLevelTransition(int32 NewLevel)
 		return;
 
 	bIsTransitioningLevel = true;
+}
+
+void ADPlatformGenerator::OnGameplayStateChanged(EGameplayState NewState)
+{
+	if (NewState == Generating)
+	{
+		if (PlatformTemplate)
+		{
+			SpawnOrigin.X = GetActorLocation().X;
+			SpawnOrigin.Y = GetActorLocation().Y;
+
+			GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);	
+		}
+
+		if (CleanUpBoxTemplate)
+		{
+			ADCleanUpBox* NewCleanUpBox = GetWorld()->SpawnActor<ADCleanUpBox>(CleanUpBoxTemplate, GetActorLocation() + (GetActorForwardVector() * -500.0f), FRotator::ZeroRotator);
+			NewCleanUpBox->OnPlatformDestroyed.AddDynamic(this, &ADPlatformGenerator::SpawnPlatform);
+		}
+	}
 }
 

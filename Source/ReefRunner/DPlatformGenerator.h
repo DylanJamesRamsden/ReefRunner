@@ -8,6 +8,7 @@
 
 class ADPlatform;
 class ADCleanUpBox;
+enum EGameplayState;
 
 	// General note to self:
 	// X axis if forward in the spawners case
@@ -120,6 +121,9 @@ protected:
 	void StartLevelTransition(int32 NewLevel);
 	
 	// ¬ END LEVEL TRANSITION
+
+	UFUNCTION()
+	void OnGameplayStateChanged(EGameplayState NewState);
 
 public:	
 	// Called every frame
