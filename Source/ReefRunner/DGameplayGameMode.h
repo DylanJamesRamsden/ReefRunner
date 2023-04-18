@@ -18,9 +18,6 @@ class REEFRUNNER_API ADGameplayGameMode : public AGameModeBase
 
 protected:
 
-	UPROPERTY()
-	ADGameplayGameState* MyGameState;
-
 	virtual void BeginPlay() override;
 
 	// Starts the game. Sets the gameplay state to 'Started'
@@ -30,4 +27,6 @@ protected:
 	// Starts the game. Sets the gameplay state to 'Started'
 	UFUNCTION(Exec)
 	void NextLevel() const;
+
+	virtual void FinishRestartPlayer(AController* NewPlayer, const FRotator& StartRotation) override;
 };

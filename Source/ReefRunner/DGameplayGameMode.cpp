@@ -9,30 +9,41 @@
 void ADGameplayGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
-	{
-		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
-		{
-			MyGameState = DGameState;
-		}
-		else UE_LOG(LogTemp, Warning, TEXT("Not using DGameplayGameState!"));
-	}
-	else UE_LOG(LogTemp, Error, TEXT("No GameState found! This has to be a timing issue!"));
+	
 }
 
 void ADGameplayGameMode::StartGame() const
 {
-	if (MyGameState)
+	if (GameState)
 	{
-		MyGameState->SetGameplayState(Started);
+		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
+		{
+			DGameState->SetGameplayState(Started);
+		}
 	}
 }
 
 void ADGameplayGameMode::NextLevel() const
 {
-	if (MyGameState)
+	if (GameState)
 	{
-		MyGameState->SetNextLevel();
+		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
+		{
+			DGameState->SetNextLevel();	
+		}
+	}
+}
+
+void ADGameplayGameMode::FinishRestartPlayer(AController* NewPlayer, const FRotator& StartRotation)
+{
+	Super::FinishRestartPlayer(NewPlayer, StartRotation);
+
+	if (GameState)
+	{
+		// Starts the world generation next tick (this ensures everything that needs be is bound to OnGameplayStateChanged)
+		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
+		{
+			GetWorldTimerManager().SetTimerForNextTick(DGameState, &ADGameplayGameState::SetNextGameplayState);
+		}
 	}
 }
