@@ -19,10 +19,10 @@ class REEFRUNNER_API ADGameplayHUD : public AHUD
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UDPrePlayWidget> PrePlayScreenWidgetClass;
+	TSubclassOf<UDPrePlayWidget> PrePlayWidgetClass;
 
 	UPROPERTY()
-	UDPrePlayWidget* PrePlayScreenWidgetRef;
+	UDPrePlayWidget* PrePlayWidgetRef;
 
 	virtual void BeginPlay() override;
 
