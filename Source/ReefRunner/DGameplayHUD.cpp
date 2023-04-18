@@ -4,6 +4,7 @@
 #include "DGameplayHUD.h"
 
 #include "DGameplayGameState.h"
+#include "Widgets/DPrePlayWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -22,16 +23,18 @@ void ADGameplayHUD::BeginPlay()
 
 void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 {
-	if (NewState == WaitingToStart)
+	if (NewState == Generating)
 	{
-		if (StartScreenWidgetClass)
+		if (PrePlayScreenWidgetClass)
 		{
-			StartScreenWidgetRef = CreateWidget<UUserWidget>(PlayerOwner, StartScreenWidgetClass);
-			if (StartScreenWidgetRef)
+			PrePlayScreenWidgetRef = CreateWidget<UDPrePlayWidget>(PlayerOwner, PrePlayScreenWidgetClass);
+			if (PrePlayScreenWidgetRef)
 			{
-				StartScreenWidgetRef->AddToViewport(1);
+				PrePlayScreenWidgetRef->OnGameplayStateChanged(NewState);
+				PrePlayScreenWidgetRef->AddToViewport(1);
 			}
 			else UE_LOG(LogTemp, Error, TEXT("Failed to create StartScreenWidget!"));	
 		}
+		else UE_LOG(LogTemp, Error, TEXT("Please assign PrePlayScreenWidgetClass in DGameplayHUD!"));	
 	}
 }

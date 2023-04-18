@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "DGameplayHUD.generated.h"
 
+class UDPrePlayWidget;
 enum EGameplayState;
 
 /**
@@ -18,10 +19,10 @@ class REEFRUNNER_API ADGameplayHUD : public AHUD
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> StartScreenWidgetClass;
+	TSubclassOf<UDPrePlayWidget> PrePlayScreenWidgetClass;
 
 	UPROPERTY()
-	UUserWidget* StartScreenWidgetRef;
+	UDPrePlayWidget* PrePlayScreenWidgetRef;
 
 	virtual void BeginPlay() override;
 
