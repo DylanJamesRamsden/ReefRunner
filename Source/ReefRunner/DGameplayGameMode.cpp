@@ -10,12 +10,11 @@ void ADGameplayGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (AGameStateBase* GS = UGameplayStatics::GetGameState(GetWorld()))
+	if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
 	{
-		if (ADGameplayGameState* DGS = Cast<ADGameplayGameState>(GS))
+		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
-			MyGameState = DGS;
-			MyGameState->SetNextGameplayState();
+			MyGameState = DGameState;
 		}
 		else UE_LOG(LogTemp, Warning, TEXT("Not using DGameplayGameState!"));
 	}
