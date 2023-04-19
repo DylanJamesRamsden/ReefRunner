@@ -48,7 +48,7 @@ void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 		}
 		else UE_LOG(LogTemp, Error, TEXT("Please assign PrePlayScreenWidgetClass in DGameplayHUD!"));	
 	}
-	else if (Started)
+	else if (NewState == Started)
 	{
 		if (PrePlayWidgetRef)
 		{
