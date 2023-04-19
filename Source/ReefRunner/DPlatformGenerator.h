@@ -35,6 +35,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	int MaxPlatforms = 20;
 
+	bool bSpawningInitialPlatforms;
+
 	// Where the first segment of a platform spawns
 	FVector SpawnOrigin;
 

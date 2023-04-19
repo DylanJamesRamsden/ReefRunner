@@ -4,6 +4,7 @@
 #include "DPlatformGenerator.h"
 
 #include "DCleanUpBox.h"
+#include "DGameplayGameMode.h"
 #include "DGameplayGameState.h"
 #include "DPlatform.h"
 #include "Kismet/GameplayStatics.h"
@@ -102,6 +103,19 @@ void ADPlatformGenerator::SpawnPlatform()
 			{
 				GetWorldTimerManager().ClearTimer(PlatformSpawnTimerHandle);
 			}
+
+			if (bSpawningInitialPlatforms)
+			{
+				bSpawningInitialPlatforms = false;
+
+				if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
+				{
+					if (ADGameplayGameMode* DGameMode = Cast<ADGameplayGameMode>(GameMode))
+					{
+						DGameMode->OnGenerationComplete();
+					}
+				}
+			}
 		}	
 	}
 }
@@ -149,7 +163,9 @@ void ADPlatformGenerator::OnGameplayStateChanged(EGameplayState NewState)
 			SpawnOrigin.X = GetActorLocation().X;
 			SpawnOrigin.Y = GetActorLocation().Y;
 
-			GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);	
+			GetWorldTimerManager().SetTimer(PlatformSpawnTimerHandle, this, &ADPlatformGenerator::SpawnPlatform, PlatformSpawnTime, true);
+
+			bSpawningInitialPlatforms = true;
 		}
 
 		if (CleanUpBoxTemplate)
