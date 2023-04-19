@@ -6,7 +6,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "DGameplayGameState.generated.h"
 
-UENUM()
+UENUM(BlueprintType)
 enum EGameplayState
 {
 	None,
