@@ -45,12 +45,14 @@ public:
 	// Sets the gameplay state to the specified gameplay state. Mostly used for commands!
 	void SetGameplayState(EGameplayState NewState);
 
+	UFUNCTION(BlueprintCallable)
 	EGameplayState GetCurrentGameplayState() const;
 
 	FOnLevelChanged OnLevelChanged;;
 	
 	void SetNextLevel();
 
+	UFUNCTION(BlueprintCallable)
 	int32 GetCurrentLevel() const;
 
 	int32 GetMaxLevels() const;
