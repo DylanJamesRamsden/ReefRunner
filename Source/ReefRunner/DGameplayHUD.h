@@ -23,6 +23,9 @@ protected:
 
 	UPROPERTY()
 	UDPrePlayWidget* PrePlayWidgetRef;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> DebugWidgetClass;
 
 	virtual void BeginPlay() override;
 

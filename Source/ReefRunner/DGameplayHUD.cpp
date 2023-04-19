@@ -19,6 +19,16 @@ void ADGameplayHUD::BeginPlay()
 			DGameState->OnGameplayStateChanged.AddDynamic(this, &ADGameplayHUD::OnGameplayStateChanged);
 		}
 	}
+
+#if WITH_EDITOR
+	if (DebugWidgetClass)
+	{
+		if (UUserWidget* DebugWidgetRef = CreateWidget<UUserWidget>(PlayerOwner, DebugWidgetClass))
+		{
+			DebugWidgetRef->AddToViewport(2);
+		}
+	}
+#endif
 }
 
 void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
