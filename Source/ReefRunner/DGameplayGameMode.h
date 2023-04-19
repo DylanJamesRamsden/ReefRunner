@@ -29,4 +29,8 @@ protected:
 	void NextLevel() const;
 
 	virtual void FinishRestartPlayer(AController* NewPlayer, const FRotator& StartRotation) override;
+
+public:
+
+	void OnGenerationComplete() const;
 };
