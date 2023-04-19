@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DGameplayGameMode.h"
-#include "DGameplayGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "DGameplayStatics.generated.h"
+
+class ADGameplayGameMode;
+class ADGameplayGameState;
 
 /**
  * 
@@ -15,6 +16,8 @@ UCLASS()
 class REEFRUNNER_API UDGameplayStatics : public UGameplayStatics
 {
 	GENERATED_BODY()
+
+public:
 
 	static ADGameplayGameMode* GetDGameplayGameMode(const UObject* WorldContext);
 

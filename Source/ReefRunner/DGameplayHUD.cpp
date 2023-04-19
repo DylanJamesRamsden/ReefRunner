@@ -4,20 +4,17 @@
 #include "DGameplayHUD.h"
 
 #include "DGameplayGameState.h"
+#include "DGameplayStatics.h"
 #include "Widgets/DPrePlayWidget.h"
 #include "Blueprint/UserWidget.h"
-#include "Kismet/GameplayStatics.h"
 
 void ADGameplayHUD::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
+	
+	if (ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
 	{
-		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
-		{
-			DGameState->OnGameplayStateChanged.AddDynamic(this, &ADGameplayHUD::OnGameplayStateChanged);
-		}
+		DGameState->OnGameplayStateChanged.AddDynamic(this, &ADGameplayHUD::OnGameplayStateChanged);
 	}
 
 #if WITH_EDITOR
@@ -40,12 +37,9 @@ void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 			PrePlayWidgetRef = CreateWidget<UDPrePlayWidget>(PlayerOwner, PrePlayWidgetClass);
 			if (PrePlayWidgetRef)
 			{
-				if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
+				if (ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
 				{
-					if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
-					{
-						DGameState->OnGameplayStateChanged.AddDynamic(PrePlayWidgetRef, &UDPrePlayWidget::OnGameplayStateChanged);
-					}
+					DGameState->OnGameplayStateChanged.AddDynamic(PrePlayWidgetRef, &UDPrePlayWidget::OnGameplayStateChanged);
 				}
 				
 				PrePlayWidgetRef->AddToViewport(1);

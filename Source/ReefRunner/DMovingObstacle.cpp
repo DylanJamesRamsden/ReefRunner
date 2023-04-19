@@ -4,24 +4,21 @@
 #include "DMovingObstacle.h"
 
 #include "DGameplayGameState.h"
-#include "Kismet/GameplayStatics.h"
+#include "DGameplayStatics.h"
 
 void ADMovingObstacle::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
+	if (ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
 	{
-		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
-		{
-			// Binds to the gameplay state change in DGameplayGameState
-			DGameState->OnGameplayStateChanged.AddDynamic(this, &ADMovingObstacle::OnGameplayStateChanged);
+		// Binds to the gameplay state change in DGameplayGameState
+		DGameState->OnGameplayStateChanged.AddDynamic(this, &ADMovingObstacle::OnGameplayStateChanged);
 
-			// If the game has already started, just set the actor to tick
-			if (DGameState->GetCurrentGameplayState() == Started)
-			{
-				SetActorTickEnabled(true);
-			}
+		// If the game has already started, just set the actor to tick
+		if (DGameState->GetCurrentGameplayState() == Started)
+		{
+			SetActorTickEnabled(true);
 		}
 	}
 }

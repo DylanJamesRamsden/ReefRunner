@@ -3,6 +3,8 @@
 
 #include "DGameplayStatics.h"
 
+#include "DGameplayGameMode.h"
+#include "DGameplayGameState.h"
 #include "GameFramework/GameMode.h"
 
 ADGameplayGameMode* UDGameplayStatics::GetDGameplayGameMode(const UObject* WorldContext)

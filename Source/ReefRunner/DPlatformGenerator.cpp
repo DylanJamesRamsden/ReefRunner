@@ -6,8 +6,8 @@
 #include "DCleanUpBox.h"
 #include "DGameplayGameMode.h"
 #include "DGameplayGameState.h"
+#include "DGameplayStatics.h"
 #include "DPlatform.h"
-#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADPlatformGenerator::ADPlatformGenerator()
@@ -22,18 +22,15 @@ void ADPlatformGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
+	if (ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
 	{
-		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
-		{
-			DGameState->OnGameplayStateChanged.AddDynamic(this, &ADPlatformGenerator::OnGameplayStateChanged);
+		DGameState->OnGameplayStateChanged.AddDynamic(this, &ADPlatformGenerator::OnGameplayStateChanged);
 			
-			DGameState->OnLevelChanged.AddDynamic(this, &ADPlatformGenerator::StartLevelTransition);
+		DGameState->OnLevelChanged.AddDynamic(this, &ADPlatformGenerator::StartLevelTransition);
 
-			check(LevelColors.Num() == DGameState->GetMaxLevels())
+		check(LevelColors.Num() == DGameState->GetMaxLevels())
 
-			CurrentPlatformColor = LevelColors[DGameState->GetCurrentLevel() - 1];
-		}
+		CurrentPlatformColor = LevelColors[DGameState->GetCurrentLevel() - 1];
 	}
 }
 
@@ -108,12 +105,9 @@ void ADPlatformGenerator::SpawnPlatform()
 			{
 				bSpawningInitialPlatforms = false;
 
-				if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(GetWorld()))
+				if (const ADGameplayGameMode* DGameMode = UDGameplayStatics::GetDGameplayGameMode(this))
 				{
-					if (ADGameplayGameMode* DGameMode = Cast<ADGameplayGameMode>(GameMode))
-					{
-						DGameMode->OnGenerationComplete();
-					}
+					DGameMode->OnGenerationComplete();
 				}
 			}
 		}	
@@ -131,21 +125,17 @@ void ADPlatformGenerator::StartLevelTransition(int32 NewLevel)
 {
 	CurrentPlatformsTransitioned = 0;
 	
-	if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
+	if (const ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
 	{
-		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
+		if (DGameState->GetCurrentLevel() == 1)
 		{
-			if (DGameState->GetCurrentLevel() == 1)
-			{
-				LevelToTransitionFrom = DGameState->GetMaxLevels();
-			}
-			else LevelToTransitionFrom = DGameState->GetCurrentLevel() - 1;
-
-			LevelToTransitionTo = DGameState->GetCurrentLevel();
+			LevelToTransitionFrom = DGameState->GetMaxLevels();
 		}
-		else UE_LOG(LogTemp, Error, TEXT("Not using DGameState as default GameState when trying to transition paltform colors to new level in DPlatformGenerator!"));
+		else LevelToTransitionFrom = DGameState->GetCurrentLevel() - 1;
+
+		LevelToTransitionTo = DGameState->GetCurrentLevel();
 	}
-	else UE_LOG(LogTemp, Error, TEXT("Can't find GameState for some odd reason when trying to transition paltform colors to new level in DPlatformGenerator!"));
+	else UE_LOG(LogTemp, Error, TEXT("Not using DGameState as default GameState when trying to transition paltform colors to new level in DPlatformGenerator!"));
 
 	// If the 2 levels are equal, there is no point in trying to blend between the same level, just return
 	if (LevelToTransitionFrom == LevelToTransitionTo)

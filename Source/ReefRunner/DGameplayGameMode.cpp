@@ -4,7 +4,6 @@
 #include "DGameplayGameMode.h"
 
 #include "DGameplayGameState.h"
-#include "Kismet/GameplayStatics.h"
 
 void ADGameplayGameMode::BeginPlay()
 {
@@ -40,7 +39,6 @@ void ADGameplayGameMode::FinishRestartPlayer(AController* NewPlayer, const FRota
 
 	if (GameState)
 	{
-		// Starts the world generation next tick (this ensures everything that needs be is bound to OnGameplayStateChanged)
 		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
 			GetWorldTimerManager().SetTimerForNextTick(DGameState, &ADGameplayGameState::SetNextGameplayState);
@@ -52,7 +50,6 @@ void ADGameplayGameMode::OnGenerationComplete() const
 {
 	if (GameState)
 	{
-		// Starts the world generation next tick (this ensures everything that needs be is bound to OnGameplayStateChanged)
 		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
 			DGameState->SetNextGameplayState();

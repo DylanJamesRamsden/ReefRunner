@@ -3,9 +3,9 @@
 
 #include "DCleanUpBox.h"
 
+#include "DGameplayStatics.h"
 #include "DPlatform.h"
 #include "Components/BoxComponent.h"
-#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADCleanUpBox::ADCleanUpBox()
@@ -27,7 +27,7 @@ void ADCleanUpBox::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+	if (APawn* PlayerPawn = UDGameplayStatics::GetPlayerPawn(GetWorld(), 0))
 	{
 		AttachToActor(PlayerPawn, FAttachmentTransformRules::KeepWorldTransform);
 	}

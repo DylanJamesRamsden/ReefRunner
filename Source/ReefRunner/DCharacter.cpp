@@ -5,6 +5,7 @@
 
 #include "DDefaultMovementConfig.h"
 #include "DGameplayGameState.h"
+#include "DGameplayStatics.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
@@ -12,7 +13,6 @@
 #include "EnhancedInput/Public/InputMappingContext.h"
 #include "EnhancedInput/Public/EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -43,13 +43,10 @@ void ADCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
+	if (ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
 	{
-		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
-		{
-			// Binds to the gameplay state change in DGameplayGameState
-			DGameState->OnGameplayStateChanged.AddDynamic(this, &ADCharacter::OnGameplayStateChanged);
-		}
+		// Binds to the gameplay state change in DGameplayGameState
+		DGameState->OnGameplayStateChanged.AddDynamic(this, &ADCharacter::OnGameplayStateChanged);
 	}
 }
 
