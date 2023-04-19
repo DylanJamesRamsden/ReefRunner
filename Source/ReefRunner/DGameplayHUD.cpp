@@ -40,7 +40,14 @@ void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 			PrePlayWidgetRef = CreateWidget<UDPrePlayWidget>(PlayerOwner, PrePlayWidgetClass);
 			if (PrePlayWidgetRef)
 			{
-				PrePlayWidgetRef->OnGameplayStateChanged(NewState);
+				if (AGameStateBase* GameState = UGameplayStatics::GetGameState(GetWorld()))
+				{
+					if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
+					{
+						DGameState->OnGameplayStateChanged.AddDynamic(PrePlayWidgetRef, &UDPrePlayWidget::OnGameplayStateChanged);
+					}
+				}
+				
 				PrePlayWidgetRef->AddToViewport(1);
 			}
 			else UE_LOG(LogTemp, Error, TEXT("Failed to create StartScreenWidget!"));	
