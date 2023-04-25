@@ -138,7 +138,8 @@ void ADCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		UEnhancedInputLocalPlayerSubsystem* EnhancedInputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-		EnhancedInputSubsystem->ClearAllMappings();
+		// Removed this as I also have input on DPlayerController
+		// EnhancedInputSubsystem->ClearAllMappings();
 		check(DefaultMovementIMC);
 		EnhancedInputSubsystem->AddMappingContext(DefaultMovementIMC, 0);
 
