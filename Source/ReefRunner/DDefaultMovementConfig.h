@@ -23,3 +23,13 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	UInputAction* JumpIA;
 };
+
+UCLASS()
+class REEFRUNNER_API UDInteractionConfig : public UDataAsset
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* StartGameIA;
+};
