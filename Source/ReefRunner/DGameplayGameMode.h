@@ -33,4 +33,6 @@ protected:
 public:
 
 	void OnGenerationComplete() const;
+
+	void OnStartInitiated();
 };

@@ -56,3 +56,14 @@ void ADGameplayGameMode::OnGenerationComplete() const
 		}
 	}
 }
+
+void ADGameplayGameMode::OnStartInitiated()
+{
+	if (GameState)
+	{
+		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
+		{
+			DGameState->SetNextGameplayState();
+		}
+	}
+}
