@@ -48,6 +48,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	float HorizontalInterpSpeed = 50.0f;
 
+	// A 2D Vector representing the limit of how far the Character can move horizontally. X is 300 added onto the starting
+	// location's Y and Y is 300 subtracted from the starting location's Y (e.g. X = 300 and Y = -300)
+	FVector2D HorizontalMovementClamp;
+
 	void HorizontalMovement(const FInputActionValue& Value);
 
 	/** Notifies when DCharacter is moving horizontally

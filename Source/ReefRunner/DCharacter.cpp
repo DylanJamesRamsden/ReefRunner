@@ -48,20 +48,29 @@ void ADCharacter::BeginPlay()
 		// Binds to the gameplay state change in DGameplayGameState
 		DGameState->OnGameplayStateChanged.AddDynamic(this, &ADCharacter::OnGameplayStateChanged);
 	}
+
+	// Set's the Horizontal Movement Clamp (how far the Character can move horizontally) based on the Character's
+	// starting location
+	HorizontalMovementClamp.X = GetActorLocation().Y + 300.f;
+	HorizontalMovementClamp.Y = GetActorLocation().Y - 300.f;
 }
 
 void ADCharacter::HorizontalMovement(const FInputActionValue& Value)
 {
-	OnMovingHorizontally(GetActorRightVector() + Value.Get<float>());
-	
-	if (!bCanInterpHorizontalLocation)
+	if (HorizontalTargetLocation.Y + (Value.Get<float>() * 100.f) <= HorizontalMovementClamp.X &&
+		HorizontalTargetLocation.Y + (Value.Get<float>() * 100.f) >= HorizontalMovementClamp.Y)
 	{
-		bCanInterpHorizontalLocation = true;
-		HorizontalTargetLocation = GetActorLocation() + ((GetActorRightVector() + Value.Get<float>() * 100.0f) - GetActorRightVector());
-	}
-	else
-	{
-		HorizontalTargetLocation = FVector(HorizontalTargetLocation.X, HorizontalTargetLocation.Y + Value.Get<float>() * 100.0f, HorizontalTargetLocation.Z);
+		if (!bCanInterpHorizontalLocation)
+		{
+			bCanInterpHorizontalLocation = true;
+			HorizontalTargetLocation = GetActorLocation() + ((GetActorRightVector() + Value.Get<float>() * 100.0f) - GetActorRightVector());
+		}
+		else
+		{
+			HorizontalTargetLocation = FVector(HorizontalTargetLocation.X, HorizontalTargetLocation.Y + Value.Get<float>() * 100.0f, HorizontalTargetLocation.Z);
+		}
+
+		OnMovingHorizontally(GetActorRightVector() + Value.Get<float>());
 	}
 }
 
