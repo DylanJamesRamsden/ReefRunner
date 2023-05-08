@@ -46,7 +46,7 @@ void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 			}
 			else UE_LOG(LogTemp, Error, TEXT("Failed to create StartScreenWidget!"));	
 		}
-		else UE_LOG(LogTemp, Error, TEXT("Please assign PrePlayScreenWidgetClass in DGameplayHUD!"));	
+		else UE_LOG(LogTemp, Error, TEXT("Please assign PrePlayScreen widget class in DGameplayHUD!"));	
 	}
 	else if (NewState == Started)
 	{
@@ -55,5 +55,16 @@ void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 			PrePlayWidgetRef->RemoveFromParent();
 			PrePlayWidgetRef = nullptr;
 		}
+
+		if (GameplayHUDWidgetClass)
+		{
+			GameplayHUDWidgetRef = CreateWidget<UUserWidget>(PlayerOwner, GameplayHUDWidgetClass);
+			if (GameplayHUDWidgetClass)
+			{
+				GameplayHUDWidgetRef->AddToViewport(1);
+			}
+			else UE_LOG(LogTemp, Error, TEXT("Failed to create GameplayHUD widget!"));	
+		}
+		else UE_LOG(LogTemp, Error, TEXT("Please assign GameplayHUD widget class in DGameplayHUD!"));	
 	}
 }

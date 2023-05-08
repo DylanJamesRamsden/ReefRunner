@@ -23,6 +23,12 @@ protected:
 
 	UPROPERTY()
 	UDPrePlayWidget* PrePlayWidgetRef;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> GameplayHUDWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* GameplayHUDWidgetRef;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> DebugWidgetClass;
