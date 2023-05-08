@@ -8,6 +8,7 @@
 
 ADPlayerState::ADPlayerState()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 }
 
@@ -30,7 +31,8 @@ void ADPlayerState::Tick(float DeltaSeconds)
 	if (const APawn* PlayerPawn = GetPawn())
 	{
 		// Unreal has a built in score system, just using that
-		SetScore(PlayerPawn->GetActorLocation().X - StartingLocation.X);
+		// Dividing by 100 to ensure the score is based on meters
+		SetScore((PlayerPawn->GetActorLocation().X - StartingLocation.X) / 100.0f);
 	}
 }
 
