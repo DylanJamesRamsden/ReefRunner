@@ -35,4 +35,6 @@ public:
 	void OnGenerationComplete() const;
 
 	void OnStartInitiated();
+
+	void OnGameComplete();
 };

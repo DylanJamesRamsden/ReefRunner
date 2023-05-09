@@ -4,6 +4,7 @@
 #include "DCharacter.h"
 
 #include "DDefaultMovementConfig.h"
+#include "DGameplayGameMode.h"
 #include "DGameplayGameState.h"
 #include "DGameplayStatics.h"
 #include "DObstacle.h"
@@ -14,6 +15,7 @@
 #include "EnhancedInput/Public/InputMappingContext.h"
 #include "EnhancedInput/Public/EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PlayerState.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -123,7 +125,18 @@ void ADCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimiti
 
 	if (Other->IsA(ADObstacle::StaticClass()))
 	{
+		// @TODO Platform Clean-up box is destroying pawn when its simulating, I think the clean-up box should be destroyed at this point
+		
 		SubmarineBodyMesh->SetSimulatePhysics(true);
+
+		SetActorTickEnabled(false);
+		
+		DisableInput(GetPlayerState()->GetPlayerController());
+
+		if (ADGameplayGameMode* DGameMode = UDGameplayStatics::GetDGameplayGameMode(this))
+		{
+			DGameMode->OnGameComplete();
+		}
 	}
 }
 
