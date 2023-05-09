@@ -29,6 +29,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	UCameraComponent* CameraComp;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UStaticMeshComponent* SubmarineBodyMesh;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -87,6 +90,8 @@ protected:
 
 	UFUNCTION()
 	void OnGameplayStateChanged(EGameplayState NewState);
+
+	virtual void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 public:	
 	// Called every frame

@@ -6,6 +6,7 @@
 #include "DDefaultMovementConfig.h"
 #include "DGameplayGameState.h"
 #include "DGameplayStatics.h"
+#include "DObstacle.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
@@ -24,9 +25,11 @@ ADCharacter::ADCharacter()
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComp");
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
+	SubmarineBodyMesh = CreateDefaultSubobject<UStaticMeshComponent>("SubmarineBodyMesh");
 
 	SpringArmComp->SetupAttachment(RootComponent);
 	CameraComp->SetupAttachment(SpringArmComp);
+	SubmarineBodyMesh->SetupAttachment(RootComponent);
 
 	SpringArmComp->bEnableCameraLag = true;
 	SpringArmComp->CameraLagSpeed = 7.5f;
@@ -110,6 +113,17 @@ void ADCharacter::OnGameplayStateChanged(EGameplayState NewState)
 				}
 			}
 			break;
+	}
+}
+
+void ADCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,
+	FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+{
+	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+
+	if (Other->IsA(ADObstacle::StaticClass()))
+	{
+		SubmarineBodyMesh->SetSimulatePhysics(true);
 	}
 }
 
