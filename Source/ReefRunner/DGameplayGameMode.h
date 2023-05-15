@@ -30,11 +30,14 @@ protected:
 
 	virtual void FinishRestartPlayer(AController* NewPlayer, const FRotator& StartRotation) override;
 
+	UFUNCTION()
+	void StartGeneration() const;
+
 public:
 
 	void OnGenerationComplete() const;
 
-	void OnStartInitiated();
+	void OnStartInitiated() const;
 
-	void OnGameComplete();
+	void OnGameComplete() const;
 };

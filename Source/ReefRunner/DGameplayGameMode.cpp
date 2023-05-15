@@ -37,11 +37,16 @@ void ADGameplayGameMode::FinishRestartPlayer(AController* NewPlayer, const FRota
 {
 	Super::FinishRestartPlayer(NewPlayer, StartRotation);
 
+	GetWorldTimerManager().SetTimerForNextTick(this, &ADGameplayGameMode::StartGeneration);
+}
+
+void ADGameplayGameMode::StartGeneration() const
+{
 	if (GameState)
 	{
 		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
-			GetWorldTimerManager().SetTimerForNextTick(DGameState, &ADGameplayGameState::SetNextGameplayState);
+			DGameState->SetGameplayState(Generating);
 		}
 	}
 }
@@ -52,29 +57,29 @@ void ADGameplayGameMode::OnGenerationComplete() const
 	{
 		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
-			DGameState->SetNextGameplayState();
+			DGameState->SetGameplayState(WaitingToStart);
 		}
 	}
 }
 
-void ADGameplayGameMode::OnStartInitiated()
+void ADGameplayGameMode::OnStartInitiated() const
 {
 	if (GameState)
 	{
 		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
-			DGameState->SetNextGameplayState();
+			DGameState->SetGameplayState(Started);
 		}
 	}
 }
 
-void ADGameplayGameMode::OnGameComplete()
+void ADGameplayGameMode::OnGameComplete() const
 {
 	if (GameState)
 	{
 		if (ADGameplayGameState* DGameState = Cast<ADGameplayGameState>(GameState))
 		{
-			DGameState->SetNextGameplayState();
+			DGameState->SetGameplayState(Ended);
 		}
 	}
 }
