@@ -40,4 +40,7 @@ public:
 	void OnStartInitiated() const;
 
 	void OnGameComplete() const;
+
+	UFUNCTION(BlueprintCallable)
+	void RestartGame();
 };

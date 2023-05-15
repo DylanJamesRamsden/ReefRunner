@@ -4,6 +4,7 @@
 #include "DGameplayGameMode.h"
 
 #include "DGameplayGameState.h"
+#include "DGameplayStatics.h"
 
 void ADGameplayGameMode::BeginPlay()
 {
@@ -82,4 +83,11 @@ void ADGameplayGameMode::OnGameComplete() const
 			DGameState->SetGameplayState(Ended);
 		}
 	}
+}
+
+void ADGameplayGameMode::RestartGame()
+{
+	FString CurrentLevelName = GetWorld()->GetMapName();
+	CurrentLevelName.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+	UDGameplayStatics::OpenLevel(GetWorld(), *CurrentLevelName);
 }
