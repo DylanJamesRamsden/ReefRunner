@@ -20,6 +20,7 @@ ADCleanUpBox::ADCleanUpBox()
 	BoxComp->SetBoxExtent(FVector(50.0f, 1000.0f, 1000.0f));
 	BoxComp->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	BoxComp->SetHiddenInGame(false);
+	BoxComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 }
 
 // Called when the game starts or when spawned
