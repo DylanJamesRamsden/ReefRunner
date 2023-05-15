@@ -29,6 +29,12 @@ protected:
 
 	UPROPERTY()
 	UUserWidget* GameplayHUDWidgetRef;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> EndGameWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* EndGameWidgetRef;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> DebugWidgetClass;
@@ -37,4 +43,7 @@ protected:
 
 	UFUNCTION()
 	void OnGameplayStateChanged(EGameplayState NewState);
+
+	UFUNCTION()
+	void SpawnEndGameWidget();
 };

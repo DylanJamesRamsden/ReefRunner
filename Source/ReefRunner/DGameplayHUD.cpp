@@ -59,7 +59,7 @@ void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 		if (GameplayHUDWidgetClass)
 		{
 			GameplayHUDWidgetRef = CreateWidget<UUserWidget>(PlayerOwner, GameplayHUDWidgetClass);
-			if (GameplayHUDWidgetClass)
+			if (GameplayHUDWidgetRef)
 			{
 				GameplayHUDWidgetRef->AddToViewport(1);
 			}
@@ -67,4 +67,29 @@ void ADGameplayHUD::OnGameplayStateChanged(EGameplayState NewState)
 		}
 		else UE_LOG(LogTemp, Error, TEXT("Please assign GameplayHUD widget class in DGameplayHUD!"));	
 	}
+	else if (NewState == Ended)
+	{
+		FTimerHandle EndGameWidgetTimerHandle;
+		GetWorldTimerManager().SetTimer(EndGameWidgetTimerHandle, this, &ADGameplayHUD::SpawnEndGameWidget, 2.0f);
+	}
+}
+
+void ADGameplayHUD::SpawnEndGameWidget()
+{
+	if (GameplayHUDWidgetRef)
+	{
+		GameplayHUDWidgetRef->RemoveFromParent();
+		GameplayHUDWidgetRef = nullptr;
+	}
+
+	if (EndGameWidgetClass)
+	{
+		EndGameWidgetRef = CreateWidget<UUserWidget>(PlayerOwner, EndGameWidgetClass);
+		if (EndGameWidgetRef)
+		{
+			EndGameWidgetRef->AddToViewport(1);
+		}
+		else UE_LOG(LogTemp, Error, TEXT("Failed to create EndGame widget!"));	
+	}
+	else UE_LOG(LogTemp, Error, TEXT("Please assign EndGame widget class in DGameplayHUD!"));	
 }
