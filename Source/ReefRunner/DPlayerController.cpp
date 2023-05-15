@@ -21,7 +21,10 @@ void ADPlayerController::BeginPlay()
 		DGameState->OnGameplayStateChanged.AddDynamic(this, &ADPlayerController::OnGameplayStateChanged);
 	}
 
+	// Sets the game viewport to be in focus as well as the Input Mode to GameOnly because if a player has restarted the
+	// game, the InputMode will carry over as UIOnly from when they died
 	UWidgetBlueprintLibrary::SetFocusToGameViewport();
+	UWidgetBlueprintLibrary::SetInputMode_GameOnly(this);
 }
 
 void ADPlayerController::StartGame()
