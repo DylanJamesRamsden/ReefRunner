@@ -9,6 +9,20 @@
 #include "DGameplayStatics.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+
+void ADPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
+	{
+		// Binds to the gameplay state change in DGameplayGameState
+		DGameState->OnGameplayStateChanged.AddDynamic(this, &ADPlayerController::OnGameplayStateChanged);
+	}
+
+	UWidgetBlueprintLibrary::SetFocusToGameViewport();
+}
 
 void ADPlayerController::StartGame()
 {
@@ -27,6 +41,15 @@ void ADPlayerController::StartGame()
 		}
 	}
 	else UE_LOG(LogTemp, Warning, TEXT("Could not find DGameplayGameState when trying to start game in %s!"), *GetName());	
+}
+
+void ADPlayerController::OnGameplayStateChanged(EGameplayState NewState)
+{
+	if (NewState == Ended)
+	{
+		SetShowMouseCursor(true);
+		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(this);
+	}
 }
 
 void ADPlayerController::SetupInputComponent()

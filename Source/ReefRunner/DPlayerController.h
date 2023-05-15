@@ -8,6 +8,7 @@
 
 class UInputMappingContext;
 class UDInteractionConfig;
+enum EGameplayState;
 
 /**
  * 
@@ -25,8 +26,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UDInteractionConfig* InteractionConfig;
 
+	virtual void BeginPlay() override;
+
 	UFUNCTION()
 	void StartGame();
+
+	UFUNCTION()
+	void OnGameplayStateChanged(EGameplayState NewState);
 
 public:
 	
