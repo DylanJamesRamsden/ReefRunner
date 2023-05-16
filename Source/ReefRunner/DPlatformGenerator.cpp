@@ -164,5 +164,9 @@ void ADPlatformGenerator::OnGameplayStateChanged(EGameplayState NewState)
 			NewCleanUpBox->OnPlatformDestroyed.AddDynamic(this, &ADPlatformGenerator::SpawnPlatform);
 		}
 	}
+	else if (NewState == Started)
+	{
+		bSpawningInitialPlatforms = false;
+	}
 }
 
