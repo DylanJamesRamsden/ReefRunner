@@ -68,6 +68,26 @@ protected:
 
 	// ~ END MOVEMENT
 
+	// ~ SPEED
+
+	UPROPERTY(EditDefaultsOnly)
+	float StartingSpeed = .4f;
+
+	float CurrentSpeed;
+
+	UPROPERTY(EditDefaultsOnly)
+	float SpeedIncrementTime;
+
+	FTimerHandle SpeedIncrementTimerHandle;
+
+	UPROPERTY(EditDefaultsOnly)
+	float SpeedIncrementAmount;
+
+	UFUNCTION()
+	void IncrementSpeed();
+
+	// ~ END SPEED
+
 	// ~ JUMPING
 
 	virtual void Jump() override;
@@ -103,4 +123,7 @@ public:
 	// ~ APAWN OVERRIDES
 	virtual void PossessedBy(AController* NewController) override;
 	// ~ END APAWN OVERRIDES
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetCurrentSpeed() const;
 };

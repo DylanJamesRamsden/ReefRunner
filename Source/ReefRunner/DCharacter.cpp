@@ -41,6 +41,8 @@ ADCharacter::ADCharacter()
 
 	GetCharacterMovement()->JumpZVelocity = 600.0f;
 	GetCharacterMovement()->bNotifyApex = true;
+
+	CurrentSpeed = StartingSpeed;
 }
 
 // Called when the game starts or when spawned
@@ -79,6 +81,11 @@ void ADCharacter::HorizontalMovement(const FInputActionValue& Value)
 	}
 }
 
+void ADCharacter::IncrementSpeed()
+{
+	CurrentSpeed += SpeedIncrementAmount;
+}
+
 void ADCharacter::Jump()
 {
 	Super::Jump();
@@ -114,6 +121,11 @@ void ADCharacter::OnGameplayStateChanged(EGameplayState NewState)
 					EnableInput(PlayerController);
 				}
 			}
+
+			GetWorldTimerManager().SetTimer(SpeedIncrementTimerHandle, this, &ADCharacter::IncrementSpeed, SpeedIncrementTime, true);
+			break;
+		case Ended:
+			GetWorldTimerManager().ClearTimer(SpeedIncrementTimerHandle);
 			break;
 	}
 }
@@ -144,7 +156,7 @@ void ADCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AddMovementInput(GetActorForwardVector() * .4f);
+	AddMovementInput(GetActorForwardVector() * CurrentSpeed);
 
 	if (bCanInterpHorizontalLocation)
 	{
@@ -194,5 +206,10 @@ void ADCharacter::PossessedBy(AController* NewController)
 	{
 		PC->SetViewTarget(this);
 	}
+}
+
+float ADCharacter::GetCurrentSpeed() const
+{
+	return CurrentSpeed;
 }
 
