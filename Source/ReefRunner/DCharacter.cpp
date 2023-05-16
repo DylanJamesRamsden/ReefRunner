@@ -118,12 +118,11 @@ void ADCharacter::OnGameplayStateChanged(EGameplayState NewState)
 	}
 }
 
-void ADCharacter::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved,
-	FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
+void ADCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
-
-	if (Other->IsA(ADObstacle::StaticClass()))
+	Super::NotifyActorBeginOverlap(OtherActor);
+	
+	if (OtherActor->IsA(ADObstacle::StaticClass()))
 	{
 		// @TODO Platform Clean-up box is destroying pawn when its simulating, I think the clean-up box should be destroyed at this point
 		

@@ -22,6 +22,7 @@ ADObstacle::ADObstacle()
 	BoxComponent->SetupAttachment(StaticMeshComp);
 
 	StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	BoxComponent->SetCollisionResponseToAllChannels(ECR_Overlap);  
 }
 
 // Called when the game starts or when spawned
