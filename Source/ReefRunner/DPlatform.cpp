@@ -36,7 +36,8 @@ void ADPlatform::InitializeSpawnSlots()
 	
 	for (int i = 0; i < Extent.Y * 2 / Divisor; i++)
 	{
-		DrawDebugPoint(GetWorld(), CurrentSpawnSlotLocation, 10, FColor::Red, false, 2.0f);
+		// @TODO Add debug bool to toggle this
+		//DrawDebugPoint(GetWorld(), CurrentSpawnSlotLocation, 10, FColor::Red, false, 2.0f);
 
 		SpawnSlotLocations.Add(CurrentSpawnSlotLocation);
 		
