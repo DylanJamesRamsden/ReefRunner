@@ -3,6 +3,7 @@
 
 #include "DPlayerState.h"
 
+#include "DCharacter.h"
 #include "DGameplayGameState.h"
 #include "DGameplayStatics.h"
 
@@ -34,6 +35,20 @@ void ADPlayerState::Tick(float DeltaSeconds)
 		// Dividing by 100 to ensure the score is based on meters
 		SetScore((PlayerPawn->GetActorLocation().X - StartingLocation.X) / 100.0f);
 	}
+
+	if (GetScore() >=  LevelChangeScore)
+	{
+		if (ADGameplayGameState* DGameState = UDGameplayStatics::GetDGameplayGameState(this))
+		{
+			DGameState->SetNextLevel();
+
+			if (ADCharacter* DCharacter = Cast<ADCharacter>(GetPawn()))
+			{
+				// @TODO Change this method up a bit, isn't the most accurate way to scale level change with speed
+				LevelChangeScore += 100.0f + (100 * (int)(DCharacter->GetCurrentSpeed() / 1.0f));
+			}
+		}
+	}
 }
 
 void ADPlayerState::OnGameplayStateChanged(EGameplayState NewState)
@@ -42,4 +57,9 @@ void ADPlayerState::OnGameplayStateChanged(EGameplayState NewState)
 	{
 		SetActorTickEnabled(true);
 	}
+}
+
+float ADPlayerState::GetLevelChangeScore()
+{
+	return LevelChangeScore;
 }

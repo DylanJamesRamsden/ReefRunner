@@ -18,6 +18,8 @@ class REEFRUNNER_API ADPlayerState : public APlayerState
 
 protected:
 
+	float LevelChangeScore = 100.0f;
+
 	ADPlayerState();
 
 	FVector StartingLocation;
@@ -28,4 +30,9 @@ protected:
 
 	UFUNCTION()
 	void OnGameplayStateChanged(EGameplayState NewState);
+
+public:
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetLevelChangeScore();
 };
