@@ -36,56 +36,85 @@ void ADPlatformGenerator::BeginPlay()
 
 void ADPlatformGenerator::SpawnPlatform()
 {
-	ADPlatform* NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate, GetActorLocation(), FRotator::ZeroRotator);
+	if (!bIsSpawningTrench)
+	{
+		if (PlatformsSinceLastTrench >= PlatformsBetweenTrenches)
+		{
+			bIsSpawningTrench = FMath::RandRange(0, TrenchPlatformSpawnVariance) == TrenchPlatformSpawnVariance;
+		}
+	}
+	
+	ADPlatform* NewPlatform = nullptr;
+	if (bIsSpawningTrench)
+	{
+		NewPlatform = GetWorld()->SpawnActor<ADPlatform>(TrenchTemplate, GetActorLocation(), FRotator::ZeroRotator);	
+	}
+	else NewPlatform = GetWorld()->SpawnActor<ADPlatform>(PlatformTemplate, GetActorLocation(), FRotator::ZeroRotator);	
+	
 	if (NewPlatform)
 	{
-		PlatformsSinceLastPickUp++;
-		PlatformsSinceLastObstacle++;
-
-		if (bIsTransitioningLevel)
+		if (!bIsSpawningTrench)
 		{
-			CurrentPlatformsTransitioned++;
-			CurrentPlatformColor = FLinearColor::LerpUsingHSV(LevelColors[LevelToTransitionFrom - 1], LevelColors[LevelToTransitionTo - 1], (1 / NumberOfPlatformsForTransition) * CurrentPlatformsTransitioned);
-			
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, CurrentPlatformColor.ToFColor(true), TEXT("Transitioning platforms!"));
+			PlatformsSinceLastPickUp++;
+			PlatformsSinceLastObstacle++;
+			PlatformsSinceLastTrench++;
 
-			if (CurrentPlatformsTransitioned == NumberOfPlatformsForTransition)
+			if (bIsTransitioningLevel)
 			{
-				bIsTransitioningLevel = false;
+				CurrentPlatformsTransitioned++;
+				CurrentPlatformColor = FLinearColor::LerpUsingHSV(LevelColors[LevelToTransitionFrom - 1], LevelColors[LevelToTransitionTo - 1], (1 / NumberOfPlatformsForTransition) * CurrentPlatformsTransitioned);
+			
+				GEngine->AddOnScreenDebugMessage(-1, 15.0f, CurrentPlatformColor.ToFColor(true), TEXT("Transitioning platforms!"));
+
+				if (CurrentPlatformsTransitioned == NumberOfPlatformsForTransition)
+				{
+					bIsTransitioningLevel = false;
+				}
+			}
+
+			NewPlatform->SetColor(CurrentPlatformColor);
+
+			bool bCanSpawnPickUp = false;
+			if (PlatformsSinceLastPickUp >= PlatformsBetweenPickups)
+			{
+				// Min and Max inclusive
+				bCanSpawnPickUp = FMath::RandRange(0, PickUpPlatformSpawnVariance) == PickUpPlatformSpawnVariance;
+			}
+
+			bool bCanSpawnObstacle = false;
+			if (PlatformsSinceLastObstacle >= PlatformsBetweenObstacles)
+			{
+				bCanSpawnObstacle = FMath::RandRange(0, ObstaclesPlatformSpawnVariance) == ObstaclesPlatformSpawnVariance;
+			}
+		
+			NewPlatform->InitializeSpawnSlots();
+			NewPlatform->SpawnItems(bCanSpawnPickUp,
+				MaxPickUpsPerPlatform,
+				PickUpSpawnVariance,
+				bCanSpawnObstacle,
+				MaxObstaclesPerPlatform,
+				ObstacleSpawnVariance);
+
+			if (bCanSpawnPickUp)
+			{
+				PlatformsSinceLastPickUp = 0;
+			}
+
+			if (bCanSpawnObstacle)
+			{
+				PlatformsSinceLastObstacle = 0;
 			}
 		}
-
-		NewPlatform->SetColor(CurrentPlatformColor);
-
-		bool bCanSpawnPickUp = false;
-		if (PlatformsSinceLastPickUp >= PlatformsBetweenPickups)
+		else
 		{
-			// Min and Max inclusive
-			bCanSpawnPickUp = FMath::RandRange(0, PickUpPlatformSpawnVariance) == PickUpPlatformSpawnVariance;
-		}
+			TrenchesSpawned++;
 
-		bool bCanSpawnObstacle = false;
-		if (PlatformsSinceLastObstacle >= PlatformsBetweenObstacles)
-		{
-			bCanSpawnObstacle = FMath::RandRange(0, ObstaclesPlatformSpawnVariance) == ObstaclesPlatformSpawnVariance;
-		}
-		
-		NewPlatform->InitializeSpawnSlots();
-		NewPlatform->SpawnItems(bCanSpawnPickUp,
-			MaxPickUpsPerPlatform,
-			PickUpSpawnVariance,
-			bCanSpawnObstacle,
-			MaxObstaclesPerPlatform,
-			ObstacleSpawnVariance);
-
-		if (bCanSpawnPickUp)
-		{
-			PlatformsSinceLastPickUp = 0;
-		}
-
-		if (bCanSpawnObstacle)
-		{
-			PlatformsSinceLastObstacle = 0;
+			if (TrenchesSpawned >= MaxNumberOfTrenchesToSpawn)
+			{
+				bIsSpawningTrench = false;
+				PlatformsSinceLastTrench = 0;
+				TrenchesSpawned = 0;
+			}
 		}
 		
 		SetActorLocation(FVector(GetActorLocation().X + 100.0f, GetActorLocation().Y, GetActorLocation().Z));

@@ -44,6 +44,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	TSubclassOf<ADPlatform> PlatformTemplate;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	TSubclassOf<ADPlatform> TrenchTemplate;
+
 	UPROPERTY()
 	TArray<ADPlatform*> Platforms;
 
@@ -90,6 +93,26 @@ protected:
 	// (0 - ObstacleSpawnVariance == ObstacleSpawnVariance)
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Obstacles")
 	int ObstacleSpawnVariance;
+
+	// How many platforms need to pass before spawning a new trench platform
+	// can be considered
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Trenches")
+	int PlatformsBetweenTrenches = 10;
+
+	int PlatformsSinceLastTrench;
+
+	// The chance a trench platform will be spawned once the number of platforms spawned
+	// exceeds the PlatformsBetweenTrenches
+	// (0 - ObstaclePlatformSpawnVariance == ObstaclePlatformSpawnVariance)
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Trenches")
+	int TrenchPlatformSpawnVariance;
+
+	bool bIsSpawningTrench;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning|Trenches")
+	int MaxNumberOfTrenchesToSpawn;
+
+	int TrenchesSpawned;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ADCleanUpBox> CleanUpBoxTemplate;
