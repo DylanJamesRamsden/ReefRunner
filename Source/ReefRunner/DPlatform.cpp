@@ -5,6 +5,7 @@
 
 #include "DObstacle.h"
 #include "DPickUp.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 ADPlatform::ADPlatform()
@@ -16,7 +17,12 @@ ADPlatform::ADPlatform()
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("RootComponent"));
 
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+	BoxComp = CreateDefaultSubobject<UBoxComponent>("BoxComp");
+	
 	StaticMeshComp->SetupAttachment(RootComponent);
+	BoxComp->SetupAttachment(RootComponent);
+
+	StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called when the game starts or when spawned

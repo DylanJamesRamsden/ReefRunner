@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "DPlatform.generated.h"
 
+class UBoxComponent;
 class ADObstacle;
 class ADPickUp;
 
@@ -23,6 +24,9 @@ protected:
 	// The segment template to spawn
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	UBoxComponent* BoxComp;
 
 	// How many individual static meshes make up a platform
 	// @TODO It would be fun to randomize this
