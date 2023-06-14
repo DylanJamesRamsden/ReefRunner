@@ -18,10 +18,10 @@ class REEFRUNNER_API ADPlayerState : public APlayerState
 
 protected:
 
-	float LevelChangeScore = 100.0f;
-
 	ADPlayerState();
 
+	float LevelChangeScore = 100.0f;
+	
 	FVector StartingLocation;
 
 	virtual void BeginPlay() override;
@@ -31,8 +31,27 @@ protected:
 	UFUNCTION()
 	void OnGameplayStateChanged(EGameplayState NewState);
 
+	float Oxygen;
+
+	UPROPERTY(EditDefaultsOnly)
+	float OxygenStartingAmount;
+
+	UPROPERTY(EditDefaultsOnly)
+	float OxygenDecreaseTime;
+
+	UPROPERTY(EditDefaultsOnly)
+	float OxygenDecreaseAmount;
+
+	FTimerHandle OxygenDecreaseTimerHandle;
+
+	UFUNCTION()
+	void DecreaseOxygen();
+
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetLevelChangeScore();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetOxygen();
 };
