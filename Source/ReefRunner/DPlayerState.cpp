@@ -81,3 +81,8 @@ float ADPlayerState::GetOxygen()
 {
 	return Oxygen;
 }
+
+void ADPlayerState::AddOxygen(float Amount)
+{
+	Oxygen += Amount;
+}

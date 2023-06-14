@@ -54,4 +54,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetOxygen();
+
+	UFUNCTION()
+	void AddOxygen(float Amount);
 };
