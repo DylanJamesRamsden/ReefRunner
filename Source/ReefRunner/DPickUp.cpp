@@ -3,6 +3,7 @@
 
 #include "DPickUp.h"
 
+#include "DPlayerState.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
@@ -45,5 +46,18 @@ void ADPickUp::NotifyActorBeginOverlap(AActor* OtherActor)
 	{
 		Destroy();
 	}
+}
+
+void ADOxygenBubble::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (const APawn* OverlappingPawn = Cast<APawn>(OtherActor))
+	{
+		if (ADPlayerState* DPlayerState = OverlappingPawn->GetPlayerState<ADPlayerState>())
+		{
+			DPlayerState->AddOxygen(OxygenAmount);
+		}
+	}
+	
+	Super::NotifyActorBeginOverlap(OtherActor);
 }
 

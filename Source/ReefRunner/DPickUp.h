@@ -35,3 +35,18 @@ public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
 };
+
+UCLASS()
+class REEFRUNNER_API ADOxygenBubble : public ADPickUp
+{
+	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly)
+	float OxygenAmount;
+
+public:
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+};
