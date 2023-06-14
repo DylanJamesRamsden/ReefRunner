@@ -64,7 +64,7 @@ void ADPlatformGenerator::SpawnPlatform()
 				CurrentPlatformsTransitioned++;
 				CurrentPlatformColor = FLinearColor::LerpUsingHSV(LevelColors[LevelToTransitionFrom - 1], LevelColors[LevelToTransitionTo - 1], (1 / NumberOfPlatformsForTransition) * CurrentPlatformsTransitioned);
 			
-				GEngine->AddOnScreenDebugMessage(-1, 15.0f, CurrentPlatformColor.ToFColor(true), TEXT("Transitioning platforms!"));
+				// GEngine->AddOnScreenDebugMessage(-1, 15.0f, CurrentPlatformColor.ToFColor(true), TEXT("Transitioning platforms!"));
 
 				if (CurrentPlatformsTransitioned == NumberOfPlatformsForTransition)
 				{
@@ -118,8 +118,8 @@ void ADPlatformGenerator::SpawnPlatform()
 		}
 		
 		SetActorLocation(FVector(GetActorLocation().X + 100.0f, GetActorLocation().Y, GetActorLocation().Z));
-		DrawDebugSphere(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 100.0f),
-			50, 26, FColor::Yellow, false, 3.0f, 0, 2);
+		/*DrawDebugSphere(GetWorld(), FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 100.0f),
+			50, 26, FColor::Yellow, false, 3.0f, 0, 2);*/
 
 		Platforms.Add(NewPlatform);
 
