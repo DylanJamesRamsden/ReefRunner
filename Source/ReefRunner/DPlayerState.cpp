@@ -11,8 +11,6 @@ ADPlayerState::ADPlayerState()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = false;
-
-	Oxygen = OxygenStartingAmount;
 }
 
 void ADPlayerState::BeginPlay()
@@ -59,7 +57,9 @@ void ADPlayerState::OnGameplayStateChanged(EGameplayState NewState)
 	{
 		SetActorTickEnabled(true);
 
-		GetWorldTimerManager().SetTimer(OxygenDecreaseTimerHandle, this, &ADPlayerState::DecreaseOxygen, OxygenDecreaseTime);
+		Oxygen = OxygenStartingAmount;
+
+		GetWorldTimerManager().SetTimer(OxygenDecreaseTimerHandle, this, &ADPlayerState::DecreaseOxygen, OxygenDecreaseTime, true);
 	}
 	else if (NewState == Ended)
 	{
@@ -69,7 +69,7 @@ void ADPlayerState::OnGameplayStateChanged(EGameplayState NewState)
 
 void ADPlayerState::DecreaseOxygen()
 {
-	Oxygen -= FMath::Clamp(Oxygen - OxygenDecreaseAmount, 0, OxygenStartingAmount);
+	Oxygen = FMath::Clamp(Oxygen - OxygenDecreaseAmount, 0, OxygenStartingAmount);
 }
 
 float ADPlayerState::GetLevelChangeScore()
