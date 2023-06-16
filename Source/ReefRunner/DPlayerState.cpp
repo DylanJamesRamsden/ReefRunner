@@ -4,6 +4,7 @@
 #include "DPlayerState.h"
 
 #include "DCharacter.h"
+#include "DGameplayGameMode.h"
 #include "DGameplayGameState.h"
 #include "DGameplayStatics.h"
 
@@ -61,15 +62,21 @@ void ADPlayerState::OnGameplayStateChanged(EGameplayState NewState)
 
 		GetWorldTimerManager().SetTimer(OxygenDecreaseTimerHandle, this, &ADPlayerState::DecreaseOxygen, OxygenDecreaseTime, true);
 	}
-	else if (NewState == Ended)
-	{
-		GetWorldTimerManager().ClearTimer(OxygenDecreaseTimerHandle);
-	}
 }
 
 void ADPlayerState::DecreaseOxygen()
 {
 	Oxygen = FMath::Clamp(Oxygen - OxygenDecreaseAmount, 0, OxygenStartingAmount);
+
+	if (Oxygen == 0)
+	{
+		if (ADGameplayGameMode* DGameMode = UDGameplayStatics::GetDGameplayGameMode(this))
+		{
+			DGameMode->OnGameComplete();
+
+			GetWorldTimerManager().ClearTimer(OxygenDecreaseTimerHandle);
+		}
+	}
 }
 
 float ADPlayerState::GetLevelChangeScore()

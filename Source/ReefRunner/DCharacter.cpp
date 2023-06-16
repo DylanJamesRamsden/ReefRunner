@@ -126,6 +126,14 @@ void ADCharacter::OnGameplayStateChanged(EGameplayState NewState)
 			break;
 		case Ended:
 			GetWorldTimerManager().ClearTimer(SpeedIncrementTimerHandle);
+
+			// @TODO Platform Clean-up box is destroying pawn when its simulating, I think the clean-up box should be destroyed at this point
+		
+			SubmarineBodyMesh->SetSimulatePhysics(true);
+
+			SetActorTickEnabled(false);
+		
+			DisableInput(GetPlayerState()->GetPlayerController());
 			break;
 	}
 }
@@ -136,14 +144,6 @@ void ADCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 	
 	if (OtherActor->IsA(ADObstacle::StaticClass()))
 	{
-		// @TODO Platform Clean-up box is destroying pawn when its simulating, I think the clean-up box should be destroyed at this point
-		
-		SubmarineBodyMesh->SetSimulatePhysics(true);
-
-		SetActorTickEnabled(false);
-		
-		DisableInput(GetPlayerState()->GetPlayerController());
-
 		if (ADGameplayGameMode* DGameMode = UDGameplayStatics::GetDGameplayGameMode(this))
 		{
 			DGameMode->OnGameComplete();
